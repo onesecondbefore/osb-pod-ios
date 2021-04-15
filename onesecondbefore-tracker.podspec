@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
     s.version      = "1.0.0"
     s.summary      = "OSB Tracker Library for iOS"
     s.description  = <<-DESC
-    OSB Tracker Library for iOS
+    OSB Tracker Pod for iOS
     DESC
     s.homepage     = "https://www.onesecondbefore.com/resources"
     s.license = { :type => 'Copyright', :text => <<-LICENSE
@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
     s.platform = :ios
     s.swift_version = "5.2"
     s.ios.deployment_target  = '12.0'
+    s.requires_arc = true
     s.user_target_xcconfig = {
       'SWIFT_INCLUDE_PATHS' => '"\$(PODS_ROOT)/onesecondbefore-tracker/OSB.framework"'
     }
