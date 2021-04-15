@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
     s.name         = "onesecondbefore-tracker"
     s.version      = "1.0.0"
-    s.summary      = "A brief description of OSB project."
+    s.summary      = "OSB Tracker Library for iOS"
     s.description  = <<-DESC
-    An extended description of OSB project.
+    OSB Tracker Library for iOS
     DESC
-    s.homepage     = "http://onesecondbefore.com/"
+    s.homepage     = "https://www.onesecondbefore.com/resources"
     s.license = { :type => 'Copyright', :text => <<-LICENSE
-                   Copyright 2020
+                   Copyright 2021
                    Permission is granted to...
                   LICENSE
                 }
