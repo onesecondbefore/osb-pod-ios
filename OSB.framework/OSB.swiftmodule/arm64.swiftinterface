@@ -1,6 +1,6 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.3.1 (swiftlang-1200.0.41 clang-1200.0.32.8)
-// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name OSB
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name OSB
 import AdSupport
 import CoreLocation
 import Foundation
@@ -31,10 +31,10 @@ public class Reachability {
       get
     }
     public static func == (a: OSB.Reachability.NetworkStatus, b: OSB.Reachability.NetworkStatus) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
     public var hashValue: Swift.Int {
       get
     }
-    public func hash(into hasher: inout Swift.Hasher)
   }
   public enum Connection : Swift.CustomStringConvertible {
     case none
@@ -44,10 +44,10 @@ public class Reachability {
       get
     }
     public static func == (a: OSB.Reachability.Connection, b: OSB.Reachability.Connection) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
     public var hashValue: Swift.Int {
       get
     }
-    public func hash(into hasher: inout Swift.Hasher)
   }
   public var whenReachable: OSB.Reachability.NetworkReachable?
   public var whenUnreachable: OSB.Reachability.NetworkUnreachable?
@@ -94,8 +94,8 @@ public enum OSBEventType : Swift.String {
   case pageview
   case screenview
   case timing
-  public typealias RawValue = Swift.String
   public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
   }
@@ -103,10 +103,10 @@ public enum OSBEventType : Swift.String {
 public enum OSBError : Swift.Error {
   case notInitialised
   public static func == (a: OSB.OSBError, b: OSB.OSBError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
     get
   }
-  public func hash(into hasher: inout Swift.Hasher)
 }
 @_hasMissingDesignatedInitializers public class OSB {
   public static var instance: OSB.OSB
