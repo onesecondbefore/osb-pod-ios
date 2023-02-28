@@ -1,0 +1,6 @@
+framework module onesecondbefore_tracker {
+  umbrella header "onesecondbefore-tracker-umbrella.h"
+
+  export *
+  module * { export * }
+}

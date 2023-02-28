@@ -1,0 +1,16 @@
+PODS:
+  - onesecondbefore-tracker (0.1.0)
+
+DEPENDENCIES:
+  - onesecondbefore-tracker (from `../`)
+
+EXTERNAL SOURCES:
+  onesecondbefore-tracker:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  onesecondbefore-tracker: c40332351f5be19c6bb1b8981795745eafc015a2
+
+PODFILE CHECKSUM: 617b9acaff95c238bc96bb6592621bbac103ee1f
+
+COCOAPODS: 1.12.0

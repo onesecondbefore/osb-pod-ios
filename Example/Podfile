@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+target 'onesecondbefore-tracker_Example' do
+  pod 'onesecondbefore-tracker', :path => '../'
+
+  target 'onesecondbefore-tracker_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
