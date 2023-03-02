@@ -22,6 +22,15 @@ public enum OSBEventType: String {
     case aggregate
 }
 
+public enum OSBSetType: String {
+    case action
+    case event
+    case item
+    case page
+    case viewable_impression
+    case none
+}
+
 public enum OSBError: Error {
     case notInitialised
 }
@@ -46,6 +55,8 @@ public class OSB {
     fileprivate var eventData: [String: Any] = [String: Any]()
     fileprivate var hitsData: [String: Any] = [String: Any]()
     fileprivate var viewId: String = ""
+    fileprivate var ids: [[String: Any]] = [[String: Any]]()
+    fileprivate var setDataObject = [String: Any]()
 
     // MARK: - Static variables
 
@@ -93,13 +104,25 @@ public class OSB {
         info.debugMode = bDebugMode
     }
 
-    public func set(name: String, data: [String: Any]) {
-        eventKey = name
-        eventData = data
+    public func set(type: OSBSetType, data: [[String: Any]]) {
+        setDataObject[type.rawValue] = data
     }
 
     public func set(data: [String: Any]) {
         hitsData = data
+    }
+    
+    public func set(name: String, data: [String: Any]) {
+        eventKey = name
+        eventData = data
+    }
+    
+    public func setIds(data: [String: Any]) {
+        setIds(data: [data])
+    }
+    
+    public func setIds(data: [[String: Any]]) {
+        ids = data
     }
 
     public func setConsent(data: String) {
@@ -114,26 +137,6 @@ public class OSB {
     public func getConsent() -> [String]? {
         let defaults = UserDefaults.standard
         return defaults.object(forKey: OSB.UDConsentKey) as? [String]
-    }
-
-    public func setAction(id: String?, revenue: Double?, shipping: Double?, tax: Double?, data: [String: Any]) {
-        // TODO: implement ^MB
-    }
-
-    public func setEvent(category: String?, action: String?, label: String?, value: Double?, interaction: Bool = true, data: [String: Any]) {
-        // TODO: implement ^MB
-    }
-
-    public func setIds(key: String?, value: String?, label: String?, hash: Bool = true, data: [String: Any]) {
-        // TODO: implement ^MB
-    }
-
-    public func setItems(id: String?, name: String?, category: String?, price: Double?, quantity: Double?, data: [String: Any]) {
-        // TODO: implement ^MB
-    }
-
-    public func setPage(title: String?, id: String?, url: String?, referrer: String?, osc_id: String?, osc_label: String?, oss_keyword: String?, oss_category: String?, oss_total_results: Int?, oss_results_per_page: Int?, oss_current_page: Int?, data: [String: Any]) {
-        // TODO: implement ^MB
     }
 
     public func sendEvent(category: String) throws {
@@ -156,9 +159,10 @@ public class OSB {
                       data: [String: Any]())
     }
 
-    public func sendEvent(category: String, action: String, label: String, value: String,
-                          data: [String: Any]) throws {
-        var actionData: [String: Any] = data
+    public func sendEvent(category: String, action: String, label: String, value: String, data: [String: Any]) throws {
+        hitsData = data
+        var actionData = [String: Any]()
+
         if !category.isEmpty {
             actionData["category"] = category
         }
@@ -175,7 +179,7 @@ public class OSB {
             actionData["value"] = value
         }
 
-        try send(type: OSBEventType.event, data: actionData)
+        try send(type: OSBEventType.event, data: [actionData])
     }
 
     public func sendAggregateEvent(scope: String, name: String, aggregateType: OSBAggregateType, value: Double) throws {
@@ -189,20 +193,20 @@ public class OSB {
         }
 
         actionData["value"] = String(format: "%.1f", value)
-        actionData["type"] = aggregateType.rawValue
+        actionData["aggregate"] = aggregateType.rawValue
 
-        try send(type: OSBEventType.aggregate, data: actionData)
+        try send(type: OSBEventType.aggregate, data: [actionData])
     }
 
     public func send(type: OSBEventType) throws {
-        try send(type: type, actionType: "", data: [String: Any]())
+        try send(type: type, actionType: "", data: [[String: Any]]())
     }
 
-    public func send(type: OSBEventType, data: [String: Any]) throws {
+    public func send(type: OSBEventType, data: [[String: Any]]) throws {
         try send(type: type, actionType: "", data: data)
     }
 
-    public func send(type: OSBEventType, actionType: String, data: [String: Any]) throws {
+    public func send(type: OSBEventType, actionType: String, data: [[String: Any]]) throws {
         if !initialised {
             throw OSBError.notInitialised
         }
@@ -223,7 +227,9 @@ public class OSB {
                                       eventData: eventData,
                                       hitsData: hitsData,
                                       viewId: viewId,
-                                      consent: getConsent())
+                                      consent: getConsent(),
+                                      ids: ids,
+                                      setDataObject: setDataObject)
 
         let jsonData = generator.generateJsonResponse()
 
@@ -267,7 +273,7 @@ public class OSB {
         actionData["ref"] = referrer
         actionData["vid"] = viewId
 
-        try send(type: OSBEventType.pageview, data: actionData)
+        try send(type: OSBEventType.pageview, data: [actionData])
     }
 
     @available(*, deprecated, message: "Please use send(), you can specifiy screenname as property: data['sn'].")
@@ -281,7 +287,7 @@ public class OSB {
         actionData["sn"] = screenName
         actionData["vid"] = viewId
 
-        try send(type: OSBEventType.event, data: actionData)
+        try send(type: OSBEventType.event, data: [actionData])
     }
 
     // MARK: - Private functions

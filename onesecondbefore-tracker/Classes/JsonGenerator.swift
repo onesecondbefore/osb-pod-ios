@@ -6,17 +6,16 @@
 //  Copyright © 2019 Crypton. All rights reserved.
 //
 
-import UIKit
-import AppTrackingTransparency
 import AdSupport
-
+import AppTrackingTransparency
+import UIKit
 
 public class JsonGenerator {
-    
+
     fileprivate var type: String = ""
     fileprivate var subType: String = ""
-    fileprivate var data = [String: Any]()
-    fileprivate var info: OSBInfo? = nil
+    fileprivate var data = [[String: Any]]()
+    fileprivate var info: OSBInfo?
     fileprivate var latitude: Double = 0.0
     fileprivate var longitude: Double = 0.0
     fileprivate var isLocationEnabled: Bool = false
@@ -25,142 +24,234 @@ public class JsonGenerator {
     fileprivate var hitsData: [String: Any]
     fileprivate var viewId: String = ""
     fileprivate var consent: [String]?
-    
+    fileprivate var ids: [[String: Any]]?
+    fileprivate var setDataObject: [String: Any]?
+
     // MARK: - Public functions
-    
-    init(_ type: String, data: [String: Any], info: OSBInfo?, subType: String,
-                latitude: Double, longitude: Double, isLocEnabled: Bool,
-         eventKey: String, eventData: [String: Any], hitsData: [String: Any], viewId: String, consent: [String]? ) {
+
+    init(_ type: String, data: [[String: Any]], info: OSBInfo?, subType: String,
+         latitude: Double, longitude: Double, isLocEnabled: Bool,
+         eventKey: String, eventData: [String: Any], hitsData: [String: Any],
+         viewId: String, consent: [String]?, ids: [[String: Any]]?, setDataObject: [String: Any]?) {
         self.type = type
         self.data = data
         self.info = info
         self.subType = subType
         self.latitude = latitude
         self.longitude = longitude
-        self.isLocationEnabled = isLocEnabled
+        isLocationEnabled = isLocEnabled
         self.eventKey = eventKey
         self.eventData = eventData
         self.hitsData = hitsData
         self.viewId = viewId
         self.consent = consent
+        self.ids = ids
+        self.setDataObject = setDataObject
     }
-    
+
     public func generateJsonResponse() -> String? {
- 
+
         var jsonData: [String: Any] = [
-            "sy" : self.getSystemInfo(),
-            "dv": self.getDeviceInfo(),
-            "hits": [self.getHitsInfo()],
-            "pg": self.getPageInfo(),
-            "consent": self.getConsentInfo()
+            "sy": getSystemInfo(),
+            "dv": getDeviceInfo(),
+            "hits": [getHitsInfo()],
+            "pg": getPageInfo(),
+            "consent": getConsentInfo(),
+            "ids": getIdsInfo(),
         ]
-        
-        if (!self.eventKey.isEmpty && !self.eventData.isEmpty) {
+
+        if !eventKey.isEmpty && !eventData.isEmpty {
             jsonData[eventKey] = eventData
         }
-        
-        return self.dataToJson(jsonData)
+
+        return dataToJson(jsonData)
     }
-    
+
     // MARK: - Private functions
-    
-    fileprivate func getConsentInfo() -> Any {
-        guard let consent = self.consent else {
-            return NSNull();
+
+    fileprivate func getIdsInfo() -> Any {
+        guard let ids = ids else {
+            return NSNull()
         }
-         
-        return consent;
+
+        return ids
     }
-    
+
+    fileprivate func getConsentInfo() -> Any {
+        guard let consent = consent else {
+            return NSNull()
+        }
+
+        return consent
+    }
+
     fileprivate func getPageInfo() -> [String: Any] {
         let pvInfoData: [String: Any] = [
-            "vid": self.viewId,
+            "view_id": viewId,
         ]
-        return pvInfoData;
+        return pvInfoData
     }
-    
+
+    fileprivate func getSetDataForType(type: OSBSetType) -> [[String: Any]]? {
+        return setDataObject?[type.rawValue] as? [[String: Any]]
+    }
+
     fileprivate func getHitsInfo() -> [String: Any] {
         // Forms data and generate response
-        var hitObj: [String: Any] = data
-        hitObj["tp"] = self.type == "action" ? self.subType : self.getTypeIdentifier()
-        hitObj["ht"] = self.dateToTimeStamp(Date())
-        
-        if (!self.hitsData.isEmpty) {
-            var dataObj = [String: Any]()
-            for (key, value) in hitsData {
-                dataObj[key] = value
+        var hitObj = [String: Any]()
+        var dataObj = [String: Any]()
+
+        // First add all appropriate data that was added with the set command. ^MB
+        switch type {
+        case OSBEventType.pageview.rawValue:
+            if let pageData = getSetDataForType(type: OSBSetType.page) {
+                for page in pageData {
+                    for (key, value) in page {
+                        dataObj[key] = value
+                    }
+                }
             }
-            hitObj["data"] = dataObj;
+            break
+        case OSBEventType.event.rawValue:
+            if let eventData = getSetDataForType(type: OSBSetType.event) {
+                for event in eventData {
+                    for (key, value) in event {
+                        if isSpecialKey(key: key, eventType: OSBEventType.event) {
+                            hitObj[key] = value
+                        } else {
+                            dataObj[key] = value
+                        }
+                    }
+                }
+            }
+            break
+        case OSBEventType.action.rawValue:
+            if let actionData = getSetDataForType(type: OSBSetType.item) {
+//                var itemsObject = [[String: Any]]()
+//                for action in actionData {
+//                    for (key, value) in action {
+//                        itemsObject[key] = value
+//                    }
+//                }
+//
+//                if !itemsObject.isEmpty {
+                hitObj["items"] = actionData
+//                }
+            }
+            break
+        case OSBEventType.viewable_impression.rawValue:
+            if let viData = getSetDataForType(type: OSBSetType.viewable_impression) {
+                for viewableImpression in viData {
+                    for (key, value) in viewableImpression {
+                        dataObj[key] = value
+                    }
+                }
+            }
+            break
+        default:
+            break
         }
+
+        // Add/Overwrite all data that was added with the send command. ^MB
+        for (key, value) in hitsData {
+            dataObj[key] = value
+        }
+
+        hitObj["tp"] = type == "action" ? subType : getTypeIdentifier()
+        hitObj["ht"] = dateToTimeStamp(Date())
+
+        for object in data {
+            for (key, value) in object {
+                if let osbEventType = OSBEventType(rawValue: type), isSpecialKey(key: key, eventType: osbEventType) {
+                    hitObj[key] = value
+                } else {
+                    dataObj[key] = value
+                }
+            }
+        }
+
+        hitObj["data"] = dataObj
+
         return hitObj
     }
-    
+
+    fileprivate func isSpecialKey(key: String, eventType: OSBEventType) -> Bool {
+        switch eventType {
+        case OSBEventType.event:
+            return key == "category" || key == "value" || key == "label" || key == "action"
+        case OSBEventType.aggregate:
+            return key == "scope" || key == "name" || key == "value" || key == "aggregate"
+        default:
+            return false
+        }
+    }
+
     fileprivate func getSystemInfo() -> [String: Any] {
-	   // System info
+        // System info
         var namespace = "default"
         var accountId = "development"
         var siteId = ""
-        if let info = self.info {
+        if let info = info {
             if !info.namespaces.isEmpty {
                 namespace = info.namespaces.joined(separator: ",")
             }
-        
+
             accountId = info.accountId
             siteId = info.siteId ?? ""
         }
 
         let systemInfoData: [String: Any] = [
-            "st": self.dateToTimeStamp(Date()),
+            "st": dateToTimeStamp(Date()),
             "tv": "6.0.0",
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
             "sid": siteId,
             "ns": namespace,
-            "tt": "ios-post"
+            "tt": "ios-post",
         ]
-        
+
         return systemInfoData
     }
-    
+
     fileprivate func getDeviceInfo() -> [String: Any] {
         // Device info
         let langId = NSLocale.current.languageCode ?? "nl"
         let countryId = NSLocale.current.regionCode ?? "NL"
         let lang = "\(langId)-\(countryId)"
         let idfa = getIDFA()
-        
+
         let deviceInfoData: [String: Any] = [
             "idfa": idfa ?? NSNull(),
             "idfv": UIDevice.current.identifierForVendor!.uuidString,
-            "tz": (TimeZone.current.secondsFromGMT() / 60),
+            "tz": TimeZone.current.secondsFromGMT() / 60,
             "lang": lang,
             "conn": NetworkManager().getConnectionMode(),
-            "sw":  UIScreen.main.bounds.width,
+            "sw": UIScreen.main.bounds.width,
             "sh": UIScreen.main.bounds.height,
-            "mem": "\(self.totalDiskSpaceInBytes())"
+            "mem": "\(totalDiskSpaceInBytes())",
         ]
-        
+
         if hasValidGeoLocation() {
             let locationData = [
                 "geo": [
-                    "latitude" : self.latitude,
-                    "longitude": self.longitude
-                ]
+                    "latitude": latitude,
+                    "longitude": longitude,
+                ],
             ]
-            return deviceInfoData.merging(locationData) { (current, _) in current }
+            return deviceInfoData.merging(locationData) { current, _ in current }
         }
-        
+
         return deviceInfoData
     }
-    
+
     fileprivate func getModelIdentifier() -> String {
         if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] { return simulatorModelIdentifier }
         var sysinfo = utsname()
         uname(&sysinfo)
         return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
     }
-    
+
     fileprivate func getUsedDiskSpace() -> String {
         let usedSpaceInBytes = totalDiskSpaceInBytes() - freeDiskSpaceInBytes()
         if usedSpaceInBytes > 0 {
@@ -168,7 +259,7 @@ public class JsonGenerator {
         }
         return ""
     }
-    
+
     fileprivate func totalDiskSpaceInBytes() -> Int64 {
         do {
             guard let totalDiskSpaceInBytes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory())[FileAttributeKey.systemSize] as? Int64 else {
@@ -179,7 +270,7 @@ public class JsonGenerator {
             return 0
         }
     }
-    
+
     fileprivate func freeDiskSpaceInBytes() -> Int64 {
         do {
             guard let totalDiskSpaceInBytes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory())[FileAttributeKey.systemFreeSize] as? Int64 else {
@@ -190,11 +281,11 @@ public class JsonGenerator {
             return 0
         }
     }
-    
+
     fileprivate func dateToTimeStamp(_ date: Date) -> Int64 {
         return Int64(date.timeIntervalSince1970 * 1000)
     }
-    
+
     fileprivate func dataToJson(_ dataDict: [String: Any]) -> String? {
         var jsonString: String? {
             do {
@@ -204,58 +295,39 @@ public class JsonGenerator {
                 return nil
             }
         }
-        
+
         return jsonString
     }
-    
+
     fileprivate func hasValidGeoLocation() -> Bool {
-        return self.isLocationEnabled && self.latitude != 0.0 && self.longitude != 0.0
+        return isLocationEnabled && latitude != 0.0 && longitude != 0.0
     }
-    
+
     fileprivate func getTypeIdentifier() -> String {
-	   // Get the type of the hits 
-        if self.type == "screenview" {
-            return "sv"
-        } else if self.type == "pageview" {
-            return "pg"
-        } else if self.type == "action" {
-            return "ac"
-        } else if self.type == "ids" {
-            return "id"
-        } else if self.type == "event" {
-            return "ev"
-        } else if self.type == "exception" {
-            return "ex"
-        } else if self.type == "social" {
-            return "sc"
-        } else if self.type == "timing" {
-            return "ti"
-        }
-        
-        return "ev"
-    }
-    
-    fileprivate func getDefaultEventsFromType(_ type: String) -> [String] {
-	   // Get the default data type ids of the hits
+        // Get the type of the hits
         if type == "screenview" {
-            return ["id", "name"]
+            return "sv"
+        } else if type == "pageview" {
+            return "pageview"
         } else if type == "action" {
-            return ["id", "title", "viewId", "url", "referrer"]
-        } else if type == "action" {
-            return ["id", "tax", "discount", "currencyCode", "revenue"]
+            return "ac"
         } else if type == "ids" {
-            return ["key", "value", "label"]
-        } else if type == "event" || type == "exception" || type == "social" || type == "timing" {
-            return ["category", "action", "label", "value"]
+            return "id"
+        } else if type == "event" {
+            return "event"
+        } else if type == "aggregate" {
+            return "aggregate"
+        } else if type == "viewable_impression" {
+            return "viewable_impression"
         }
-        
-        return [""]
+
+        return "event"
     }
-    
+
     fileprivate func getIDFA() -> String? {
         // Check whether advertising tracking is enabled
         if #available(iOS 14, *) {
-            if ATTrackingManager.trackingAuthorizationStatus != ATTrackingManager.AuthorizationStatus.authorized  {
+            if ATTrackingManager.trackingAuthorizationStatus != ATTrackingManager.AuthorizationStatus.authorized {
                 return nil
             }
         } else {

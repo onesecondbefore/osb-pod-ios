@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "OSB.h"
 
 FOUNDATION_EXPORT double onesecondbefore_trackerVersionNumber;
 FOUNDATION_EXPORT const unsigned char onesecondbefore_trackerVersionString[];

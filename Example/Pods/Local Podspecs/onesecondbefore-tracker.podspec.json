@@ -1,22 +1,24 @@
 {
   "name": "onesecondbefore-tracker",
-  "version": "0.1.0",
-  "summary": "A short description of onesecondbefore-tracker.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/MartienB/onesecondbefore-tracker",
+  "version": "2.0.0",
+  "summary": "OSB Tracker Library for iOS",
+  "description": "One Second Before Tracker iOS library.",
+  "homepage": "https://www.onesecondbefore.com/resources",
   "license": {
-    "type": "MIT",
-    "file": "LICENSE"
+    "type": "Copyright",
+    "text": "Copyright 2023 Onesecondbefore"
   },
   "authors": {
-    "MartienB": "martien@onesecondbefore.com"
+    "OneSecondBefore": "info@onesecondbefore.com"
   },
   "source": {
-    "git": "https://github.com/MartienB/onesecondbefore-tracker.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/onesecondbefore/osb-pod-ios.git",
+    "tag": "2.0.0"
   },
   "platforms": {
-    "ios": "10.0"
+    "ios": "11.0"
   },
-  "source_files": "onesecondbefore-tracker/Classes/**/*"
+  "swift_versions": "5.2",
+  "source_files": "onesecondbefore-tracker/Classes/**/*",
+  "swift_version": "5.2"
 }
