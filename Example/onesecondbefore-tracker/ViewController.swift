@@ -3,7 +3,7 @@
 //  onesecondbefore-tracker
 //
 //  Created by MartienB on 03/01/2023.
-//  Copyright (c) 2023 MartienB. All rights reserved.
+//  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //
 
 import UIKit
@@ -16,11 +16,11 @@ class ViewController: UIViewController {
 
         // OSB configuration
         let osb = OSB.instance
-        let clientId =  "ios_sdk-defdf0691b47bea99f6d7db2ce2b6b83a9fbd53a"
+        let accountId =  "development"
         let serverUrl = "https://enbxr4mb0mcla.x.pipedream.net"
-        osb.config(accountId: clientId, url: serverUrl, siteId: "osbdemo.app")
+        osb.config(accountId: accountId, url: serverUrl, siteId: "osbdemo.app")
         
-        osb.debug(true) // Enabling debug will print the JSON that is send to the OSB server.
+        osb.debug(true) // Enabling debug will print the JSON that is sent to the OSB server.
         
         // OSB - setting consent
         osb.setConsent(data: ["marketing", "social", "functional", "advertising"]);

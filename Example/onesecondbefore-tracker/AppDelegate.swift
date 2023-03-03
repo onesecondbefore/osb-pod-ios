@@ -3,7 +3,7 @@
 //  onesecondbefore-tracker
 //
 //  Created by MartienB on 03/01/2023.
-//  Copyright (c) 2023 MartienB. All rights reserved.
+//  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //
 
 import UIKit
