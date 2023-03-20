@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		01DD99A6F928AC2FD2B44C373271697C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1C2B7E41978A5E380D64A62C988609 /* NetworkManager.swift */; };
+		0AE35C3829C90B950021DB82 /* OSB.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0AE35C3629C90B950021DB82 /* OSB.plist */; };
 		15C1ADE9AA2F85511B32448075D3D5D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		30795040A390E76189C2D96ECCC74618 /* Pods-onesecondbefore-tracker_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A1976A81EF39772393D6F1EE97AF0A /* Pods-onesecondbefore-tracker_Example-dummy.m */; };
 		3D3861206156268AAE0941A3F457D764 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		04B86E510B240FDB3961C0E83E97C774 /* Pods-onesecondbefore-tracker_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-onesecondbefore-tracker_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		0AE35C3629C90B950021DB82 /* OSB.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = OSB.plist; sourceTree = "<group>"; };
 		0B96D4D3061122F1C44E79FC8A0B5005 /* LocationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationManager.swift; path = "onesecondbefore-tracker/Classes/LocationManager.swift"; sourceTree = "<group>"; };
 		1EBCED9BDDBCC49F370E3F4446036431 /* JsonGenerator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JsonGenerator.swift; path = "onesecondbefore-tracker/Classes/JsonGenerator.swift"; sourceTree = "<group>"; };
 		2D538260DC8C85E2E5B2EBCD1D91E261 /* onesecondbefore-tracker */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "onesecondbefore-tracker"; path = onesecondbefore_tracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,22 +47,22 @@
 		352CEF35199C280EEB253B1ADDEF66C6 /* Pods-onesecondbefore-tracker_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-onesecondbefore-tracker_Example-frameworks.sh"; sourceTree = "<group>"; };
 		40E05297982D93BEC031D9C4FF8D70C4 /* ApiQueue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ApiQueue.swift; path = "onesecondbefore-tracker/Classes/ApiQueue.swift"; sourceTree = "<group>"; };
 		505AD9C36677694E4F297E9FE1A30A59 /* UserAgent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UserAgent.swift; path = "onesecondbefore-tracker/Classes/UserAgent.swift"; sourceTree = "<group>"; };
-		60C2103304655B56E1BEC0C2F710015A /* onesecondbefore-tracker.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "onesecondbefore-tracker.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		60C2103304655B56E1BEC0C2F710015A /* onesecondbefore-tracker.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "onesecondbefore-tracker.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		74A1976A81EF39772393D6F1EE97AF0A /* Pods-onesecondbefore-tracker_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-onesecondbefore-tracker_Example-dummy.m"; sourceTree = "<group>"; };
 		7A951D533B3298A40D1C7ED86A2B9886 /* Pods-onesecondbefore-tracker_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-onesecondbefore-tracker_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		8CEBE00C399BBA610DCDD60EE184C018 /* onesecondbefore-tracker-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "onesecondbefore-tracker-umbrella.h"; sourceTree = "<group>"; };
 		94F166D7A1706C5353EF132C42CBE55A /* onesecondbefore-tracker-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "onesecondbefore-tracker-Info.plist"; sourceTree = "<group>"; };
 		9A235E081AA2503CF74F64863A12AB94 /* onesecondbefore-tracker-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "onesecondbefore-tracker-prefix.pch"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A70782A367862FDF6082FFF72E883FBA /* Pods-onesecondbefore-tracker_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-onesecondbefore-tracker_Example-Info.plist"; sourceTree = "<group>"; };
 		A8846BAFDAC8207000EA39B120D11357 /* Pods-onesecondbefore-tracker_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-onesecondbefore-tracker_Example"; path = Pods_onesecondbefore_tracker_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE007E0D8F57F088360D6B5300D2A3DD /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		AE007E0D8F57F088360D6B5300D2A3DD /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B63F97507ECFCC7E8FA8567548ECB495 /* Pods-onesecondbefore-tracker_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-onesecondbefore-tracker_Example.release.xcconfig"; sourceTree = "<group>"; };
 		B811C948B2166E96932E2A8CA9B82422 /* Reachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = "onesecondbefore-tracker/Classes/Reachability.swift"; sourceTree = "<group>"; };
 		C7984896F6C50892F416EFE425489E03 /* onesecondbefore-tracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "onesecondbefore-tracker.debug.xcconfig"; sourceTree = "<group>"; };
 		D6DD608CD036352EDF6172711A5D78C1 /* Pods-onesecondbefore-tracker_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-onesecondbefore-tracker_Example.modulemap"; sourceTree = "<group>"; };
-		D7BAB9BC749D7D8DC3B152EFBB462EE1 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		D7BAB9BC749D7D8DC3B152EFBB462EE1 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		DACB3809A74A0E25B42A1CB43716FAE4 /* Pods-onesecondbefore-tracker_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-onesecondbefore-tracker_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		DB75B27BDA568F570533C8D0C344EF9A /* onesecondbefore-tracker.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "onesecondbefore-tracker.modulemap"; sourceTree = "<group>"; };
 		ED00CE09BEBB66C096368AD16FC06C0F /* OSB.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OSB.swift; path = "onesecondbefore-tracker/Classes/OSB.swift"; sourceTree = "<group>"; };
@@ -102,6 +104,15 @@
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/onesecondbefore-tracker";
+			sourceTree = "<group>";
+		};
+		0AE35C3429C90B950021DB82 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				0AE35C3629C90B950021DB82 /* OSB.plist */,
+			);
+			name = Assets;
+			path = "onesecondbefore-tracker/Assets";
 			sourceTree = "<group>";
 		};
 		2E6041773D37906755D9B928CFED66ED /* Development Pods */ = {
@@ -167,6 +178,7 @@
 		C57D8CB6188B6CF97D3F4212564E0FAF /* onesecondbefore-tracker */ = {
 			isa = PBXGroup;
 			children = (
+				0AE35C3429C90B950021DB82 /* Assets */,
 				40E05297982D93BEC031D9C4FF8D70C4 /* ApiQueue.swift */,
 				1EBCED9BDDBCC49F370E3F4446036431 /* JsonGenerator.swift */,
 				0B96D4D3061122F1C44E79FC8A0B5005 /* LocationManager.swift */,
@@ -252,6 +264,8 @@
 				3312DD54CBB57D4329EC222B6A03ABD9 /* Sources */,
 				0B4061BA5CA0275A7C384046F830795E /* Frameworks */,
 				7FAD93ED28FFD3DAF0A7B420C111FB5A /* Resources */,
+				0AE35C2E29C8E8CF0021DB82 /* Run Script - Add Git hash to plist ^MB */,
+				0AE35C3329C901C90021DB82 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -302,10 +316,50 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AE35C3829C90B950021DB82 /* OSB.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0AE35C2E29C8E8CF0021DB82 /* Run Script - Add Git hash to plist ^MB */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH,
+			);
+			name = "Run Script - Add Git hash to plist ^MB";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "INFO_PLIST=${SRCROOT}\"/../../onesecondbefore-tracker/Assets/OSB.plist\"\n\necho \"plist path:\"\necho \"${INFO_PLIST}\"\n# Query and save the value; suppress any error message, if key not found.\nvalue=$(/usr/libexec/PlistBuddy -c 'print :GitCommitHash' \"${INFO_PLIST}\" 2>/dev/null)\n\n# Check if value is empty\nif [ -z \"$value\" ] \nthen\n   /usr/libexec/PlistBuddy -c \"Add :GitCommitHash string\" \"${INFO_PLIST}\"\nfi\n\n/usr/libexec/PlistBuddy -c \"Set :GitCommitHash `git rev-parse --short HEAD`\" \"${INFO_PLIST}\"\n\n";
+		};
+		0AE35C3329C901C90021DB82 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${PROJECT_DIR}\" ; agvtool bump\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3312DD54CBB57D4329EC222B6A03ABD9 /* Sources */ = {
@@ -498,8 +552,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

@@ -202,7 +202,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "6.0.0",
+            "tv": "6.0." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
@@ -336,5 +336,16 @@ public class JsonGenerator {
             }
         }
         return ASIdentifierManager.shared().advertisingIdentifier.uuidString
+    }
+    
+    fileprivate func getGitHash() -> String {
+        guard let path = Bundle(for: Self.self).path(forResource: "OSB", ofType: "plist"),
+              let xml = FileManager.default.contents(atPath: path),
+              let plist = try! PropertyListSerialization.propertyList(from: xml, options: .mutableContainers, format: nil) as? [String:String]
+        else {
+            return "unknown"
+        }
+    
+        return plist["GitCommitHash"] ?? ""
     }
 }
