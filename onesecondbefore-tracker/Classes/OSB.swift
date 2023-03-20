@@ -201,6 +201,10 @@ public class OSB {
     public func send(type: OSBEventType) throws {
         try send(type: type, actionType: "", data: [[String: Any]]())
     }
+    
+    public func send(type: OSBEventType, data: [String: Any]) throws {
+        try send(type: type, actionType: "", data: [data])
+    }
 
     public func send(type: OSBEventType, data: [[String: Any]]) throws {
         try send(type: type, actionType: "", data: data)
@@ -226,7 +230,7 @@ public class OSB {
                                       eventKey: eventKey,
                                       eventData: eventData,
                                       hitsData: hitsData,
-                                      viewId: viewId,
+                                      viewId: getViewId(type: type),
                                       consent: getConsent(),
                                       ids: ids,
                                       setDataObject: setDataObject)
@@ -291,7 +295,16 @@ public class OSB {
     }
 
     // MARK: - Private functions
-
+    
+    private func getViewId(type: OSBEventType) -> String {
+        if (type == OSBEventType.pageview){
+            viewId = generateRandomString()
+        }
+        
+        return viewId;
+    }
+    
+    
     @objc private func applicationWillEnterForeground(_ notification: NSNotification) {
         viewId = generateRandomString()
     }
