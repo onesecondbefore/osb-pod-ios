@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = 'onesecondbefore-tracker'
-  s.version               = '2.0.0'
+  s.version               = '2.0.1'
   s.summary               = "OSB Analytics Library for iOS"
   s.description           = 'Onesecondbefore Analytics Library for iOS'
   s.homepage              = "https://www.onesecondbefore.com/resources"
