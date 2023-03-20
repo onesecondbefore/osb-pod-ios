@@ -339,7 +339,13 @@ public class JsonGenerator {
     }
     
     fileprivate func getGitHash() -> String {
-        guard let path = Bundle(for: Self.self).path(forResource: "OSB", ofType: "plist"),
+        
+        let frameworkBundle = Bundle(for: JsonGenerator.self)
+        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("onesecondbefore-tracker.bundle")
+        let resourceBundle = Bundle(url: bundleURL!)
+        
+
+        guard let path = resourceBundle?.path(forResource: "OSB", ofType: "plist"),
               let xml = FileManager.default.contents(atPath: path),
               let plist = try! PropertyListSerialization.propertyList(from: xml, options: .mutableContainers, format: nil) as? [String:String]
         else {
