@@ -10,7 +10,14 @@ import Foundation
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
 
+    fileprivate var locationManager = CLLocationManager()
+    fileprivate var locationIsEnabled = false
+
     // MARK: - Public functions
+
+    public func initialize() {
+        locationManager.delegate = self
+    }
 
     public func getLocationCoordinates() -> (CLLocationDegrees, CLLocationDegrees) {
         let locManager = CLLocationManager()
@@ -26,6 +33,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
 
     public func isLocationEnabled() -> Bool {
-        return CLLocationManager.locationServicesEnabled()
+        return locationIsEnabled
+    }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == CLAuthorizationStatus.authorizedWhenInUse || status == CLAuthorizationStatus.authorizedAlways {
+            locationIsEnabled = true
+        } else {
+            locationIsEnabled = false
+        }
     }
 }

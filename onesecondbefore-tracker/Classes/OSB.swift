@@ -96,6 +96,8 @@ public class OSB {
         info.accountId = accountId
         info.siteId = siteId
         info.serverUrl = url
+        
+        locationManager.initialize()
 
         initialised = true
     }

@@ -8,12 +8,15 @@
 
 import UIKit
 import onesecondbefore_tracker
+import CoreLocation
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        CLLocationManager().requestAlwaysAuthorization()
+       
         // OSB configuration
         let osb = OSB.instance
         let accountId =  "development"
@@ -51,21 +54,21 @@ class ViewController: UIViewController {
             // JS: osb.set("page", {"article": 123})
             // JS: osb.send("pageview", {"b": 2});
             //
-            // osb.setConsent(data: ["marketing", "social", "functional", "advertising"]);
-            // osb.set(type: .page, data: [["article": 123]])
-            // try osb.send(type: .pageview, data: [["b": 2]])
-            // try osb.send(type: .pageview)
+             osb.setConsent(data: ["marketing", "social", "functional", "advertising"]);
+             osb.set(type: .page, data: [["article": 123]])
+             try osb.send(type: .pageview, data: [["b": 2]])
+             try osb.send(type: .pageview)
             
             // OSB - VIEWABLE IMPRESSION
             //
-            // try osb.send(type: .viewable_impression, data: [["a": 1, "b": 2]])
+             try osb.send(type: .viewable_impression, data: [["a": 1, "b": 2]])
             
             // OSB - ACTION
             // JS: osb('set', 'items', [{id: 'sku123',name: 'Apple iPhone 14 Pro',category: 'mobile',price: 1234.56,quantity: 1}, {id: 'sku234',name: 'Samsung Galaxy S22',category: 'mobile',price: 1034.56,quantity: 1}])
             // JS: osb('send', 'action', 'purchase', { id: 'abcd1234', revenue: 2269.12, tax: (2269.12 * 0.21), shipping: 100, affiliation: 'partner_funnel')}
             //
             // osb.set(type: .item, data: [["id": "sku123", "name": "Apple iPhone 14 Pro", "category": "mobile", "price": 1234.56, "quantity": 1], ["id": "sku234", "name": "Samsung Galaxy S22", "category": "mobile", "price": 1034.56, "quantity": 1]])
-            // try osb.send(type: .action, actionType: "purchase", data: [["id": "abcd1234", "revenue": 2269.12, "tax": (2269.12 * 0.21), "shipping": 100, "affiliation": "partner_funnel"]])
+             try osb.send(type: .action, actionType: "purchase", data: [["id": "abcd1234", "revenue": 2269.12, "tax": (2269.12 * 0.21), "shipping": 100, "affiliation": "partner_funnel"]])
             
         } catch OSBError.notInitialised {
             print("OSB is not initialised")
