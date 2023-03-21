@@ -3,7 +3,7 @@
 //  OSB
 //
 //  Created by Crypton on 04/06/19.
-//  Copyright © 2019 Crypton. All rights reserved.
+//  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //
 
 import Foundation
@@ -111,16 +111,16 @@ public class OSB {
     public func set(data: [String: Any]) {
         hitsData = data
     }
-    
+
     public func set(name: String, data: [String: Any]) {
         eventKey = name
         eventData = data
     }
-    
+
     public func setIds(data: [String: Any]) {
         setIds(data: [data])
     }
-    
+
     public func setIds(data: [[String: Any]]) {
         ids = data
     }
@@ -201,7 +201,7 @@ public class OSB {
     public func send(type: OSBEventType) throws {
         try send(type: type, actionType: "", data: [[String: Any]]())
     }
-    
+
     public func send(type: OSBEventType, data: [String: Any]) throws {
         try send(type: type, actionType: "", data: [data])
     }
@@ -275,7 +275,6 @@ public class OSB {
         actionData["url"] = url
         actionData["ttl"] = title
         actionData["ref"] = referrer
-        actionData["vid"] = viewId
 
         try send(type: OSBEventType.pageview, data: [actionData])
     }
@@ -289,22 +288,20 @@ public class OSB {
     public func sendScreenView(screenName: String, data: [String: Any]) throws {
         var actionData: [String: Any] = data
         actionData["sn"] = screenName
-        actionData["vid"] = viewId
 
         try send(type: OSBEventType.event, data: [actionData])
     }
 
     // MARK: - Private functions
-    
+
     private func getViewId(type: OSBEventType) -> String {
-        if (type == OSBEventType.pageview){
+        if type == OSBEventType.pageview {
             viewId = generateRandomString()
         }
-        
-        return viewId;
+
+        return viewId
     }
-    
-    
+
     @objc private func applicationWillEnterForeground(_ notification: NSNotification) {
         viewId = generateRandomString()
     }

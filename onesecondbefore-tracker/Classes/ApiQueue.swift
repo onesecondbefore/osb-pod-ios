@@ -3,7 +3,7 @@
 //  OSB
 //
 //  Created by Crypton on 07/06/19.
-//  Copyright © 2019 Crypton. All rights reserved.
+//  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //
 
 import Foundation
@@ -93,6 +93,7 @@ public class ApiQueue: NetworkManagerDelegate {
     }
 
     // MARK: - Private functions
+
     fileprivate func callApi(_ task: QueueTask) {
         // Send the queue data to server endpoint
         let url = URL(string: task.url)!

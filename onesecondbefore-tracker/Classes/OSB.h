@@ -3,7 +3,7 @@
 //  OSB
 //
 //  Created by cryptondev on 03/06/19.
-//  Copyright © 2019 cryptondev. All rights reserved.
+//  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

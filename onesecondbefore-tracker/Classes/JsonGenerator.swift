@@ -3,7 +3,7 @@
 //  OSB
 //
 //  Created by Crypton on 04/06/19.
-//  Copyright © 2019 Crypton. All rights reserved.
+//  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //
 
 import AdSupport
@@ -337,21 +337,20 @@ public class JsonGenerator {
         }
         return ASIdentifierManager.shared().advertisingIdentifier.uuidString
     }
-    
+
     fileprivate func getGitHash() -> String {
-        
+
         let frameworkBundle = Bundle(for: JsonGenerator.self)
         let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("onesecondbefore-tracker.bundle")
         let resourceBundle = Bundle(url: bundleURL!)
-        
 
         guard let path = resourceBundle?.path(forResource: "OSB", ofType: "plist"),
               let xml = FileManager.default.contents(atPath: path),
-              let plist = try! PropertyListSerialization.propertyList(from: xml, options: .mutableContainers, format: nil) as? [String:String]
+              let plist = try! PropertyListSerialization.propertyList(from: xml, options: .mutableContainers, format: nil) as? [String: String]
         else {
             return "unknown"
         }
-    
+
         return plist["GitCommitHash"] ?? ""
     }
 }

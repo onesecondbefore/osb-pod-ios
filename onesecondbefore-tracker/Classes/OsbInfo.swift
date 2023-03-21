@@ -3,7 +3,7 @@
 //  OSB
 //
 //  Created by Crypton on 05/04/21.
-//  Copyright © 2019 Crypton. All rights reserved.
+//  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //
 
 class OSBInfo {
