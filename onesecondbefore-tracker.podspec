@@ -11,4 +11,5 @@ Pod::Spec.new do |s|
   s.swift_version         = "5.2"
   s.source_files          = 'onesecondbefore-tracker/Classes/**/*'
   s.resource_bundles      = { 'onesecondbefore-tracker' => ['onesecondbefore-tracker/Assets/*'] }
+  s.readme                = "README.md"
 end

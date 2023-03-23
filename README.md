@@ -13,3 +13,6 @@ it, simply add the following line to your Podfile:
 pod 'onesecondbefore-tracker'
 ```
 
+## Documentation
+
+See [reference](https://www.onesecondbefore.com/resources/analytics/reference-mobile/).
