@@ -87,7 +87,7 @@ public class JsonGenerator {
 
     fileprivate func getPageInfo() -> [String: Any] {
         let pvInfoData: [String: Any] = [
-            "view_id": viewId,
+            "vid": viewId,
         ]
         return pvInfoData
     }
