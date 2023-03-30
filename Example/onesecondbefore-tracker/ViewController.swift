@@ -68,7 +68,10 @@ class ViewController: UIViewController {
             // JS: osb('send', 'action', 'purchase', { id: 'abcd1234', revenue: 2269.12, tax: (2269.12 * 0.21), shipping: 100, affiliation: 'partner_funnel')}
             //
             // osb.set(type: .item, data: [["id": "sku123", "name": "Apple iPhone 14 Pro", "category": "mobile", "price": 1234.56, "quantity": 1], ["id": "sku234", "name": "Samsung Galaxy S22", "category": "mobile", "price": 1034.56, "quantity": 1]])
-             try osb.send(type: .action, actionType: "purchase", data: [["id": "abcd1234", "revenue": 2269.12, "tax": (2269.12 * 0.21), "shipping": 100, "affiliation": "partner_funnel"]])
+            try osb.send(type: .action, actionType: "purchase", data: [["id": "abcd1234", "revenue": 2269.12, "tax": (2269.12 * 0.21), "shipping": 100, "affiliation": "partner_funnel"]])
+            
+            // OSB - Screen view
+            try osb.sendScreenView(screenName: "Homepage", className: "MainController", data: ["a":"1", "b":"2"])
             
         } catch OSBError.notInitialised {
             print("OSB is not initialised")

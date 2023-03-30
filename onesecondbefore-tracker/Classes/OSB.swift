@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public enum OSBEventType: String {
+public enum OSBHitType: String {
     case ids
     case social
     case event
@@ -181,7 +181,7 @@ public class OSB {
             actionData["value"] = value
         }
 
-        try send(type: OSBEventType.event, data: [actionData])
+        try send(type: OSBHitType.event, data: [actionData])
     }
 
     public func sendAggregateEvent(scope: String, name: String, aggregateType: OSBAggregateType, value: Double) throws {
@@ -197,22 +197,42 @@ public class OSB {
         actionData["value"] = String(format: "%.1f", value)
         actionData["aggregate"] = aggregateType.rawValue
 
-        try send(type: OSBEventType.aggregate, data: [actionData])
+        try send(type: OSBHitType.aggregate, data: [actionData])
+    }
+    
+    public func sendScreenView(screenName: String) throws {
+        try sendScreenView(screenName: screenName, className: "", data: [:])
     }
 
-    public func send(type: OSBEventType) throws {
+    public func sendScreenView(screenName: String, data: [String: Any]) throws {
+        try sendScreenView(screenName: screenName, className: "", data: data)
+    }
+    
+    public func sendScreenView(screenName: String, className: String) throws {
+        try sendScreenView(screenName: screenName, className: className, data: [:])
+    }
+    
+    public func sendScreenView(screenName: String, className: String, data: [String: Any]) throws {
+        var actionData: [String: Any] = data
+        actionData["sn"] = screenName
+        actionData["cn"] = className
+
+        try send(type: OSBHitType.screenview, data: [actionData])
+    }
+
+    public func send(type: OSBHitType) throws {
         try send(type: type, actionType: "", data: [[String: Any]]())
     }
 
-    public func send(type: OSBEventType, data: [String: Any]) throws {
+    public func send(type: OSBHitType, data: [String: Any]) throws {
         try send(type: type, actionType: "", data: [data])
     }
 
-    public func send(type: OSBEventType, data: [[String: Any]]) throws {
+    public func send(type: OSBHitType, data: [[String: Any]]) throws {
         try send(type: type, actionType: "", data: data)
     }
 
-    public func send(type: OSBEventType, actionType: String, data: [[String: Any]]) throws {
+    public func send(type: OSBHitType, actionType: String, data: [[String: Any]]) throws {
         if !initialised {
             throw OSBError.notInitialised
         }
@@ -250,6 +270,20 @@ public class OSB {
     }
 
     // MARK: - Deprecated functions
+    
+    @available(*, deprecated, renamed: "OSBHitType")
+    public enum OSBEventType: String {
+        case ids
+        case social
+        case event
+        case action
+        case exception
+        case pageview
+        case screenview
+        case timing
+        case viewable_impression
+        case aggregate
+    }
 
     @available(*, deprecated, renamed: "config")
     public func create(accountId: String, url: String) {
@@ -261,43 +295,30 @@ public class OSB {
         config(accountId: accountId, url: url, siteId: siteId)
     }
 
-    @available(*, deprecated, message: "Please use send() with OSBEventType.pageview")
+    @available(*, deprecated, message: "Please use send() with OSBHitType.pageview")
     public func sendPageView(url: String, title: String) throws {
         try sendPageView(url: url, title: title, referrer: "", data: [String: Any]())
     }
 
-    @available(*, deprecated, message: "Please use send() with OSBEventType.pageview")
+    @available(*, deprecated, message: "Please use send() with OSBHitType.pageview")
     public func sendPageView(url: String, title: String, referrer: String) throws {
         try sendPageView(url: url, title: title, referrer: referrer, data: [String: Any]())
     }
 
-    @available(*, deprecated, message: "Please use send() with OSBEventType.pageview")
+    @available(*, deprecated, message: "Please use send() with OSBHitType.pageview")
     public func sendPageView(url: String, title: String, referrer: String, data: [String: Any]) throws {
         var actionData: [String: Any] = data
         actionData["url"] = url
         actionData["ttl"] = title
         actionData["ref"] = referrer
 
-        try send(type: OSBEventType.pageview, data: [actionData])
-    }
-
-    @available(*, deprecated, message: "Please use send(), you can specifiy screenname as property: data['sn'].")
-    public func sendScreenView(screenName: String) throws {
-        try sendScreenView(screenName: screenName, data: [String: Any]())
-    }
-
-    @available(*, deprecated, message: "Please use send(), you can specifiy screenname as property: data['sn'].")
-    public func sendScreenView(screenName: String, data: [String: Any]) throws {
-        var actionData: [String: Any] = data
-        actionData["sn"] = screenName
-
-        try send(type: OSBEventType.event, data: [actionData])
+        try send(type: OSBHitType.pageview, data: [actionData])
     }
 
     // MARK: - Private functions
 
-    private func getViewId(type: OSBEventType) -> String {
-        if type == OSBEventType.pageview {
+    private func getViewId(type: OSBHitType) -> String {
+        if type == OSBHitType.pageview {
             viewId = generateRandomString()
         }
 
