@@ -1,10 +1,10 @@
 //
 //  JsonGenerator.swift
-//  OSB
 //
-//  Created by Crypton on 04/06/19.
 //  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
-//
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.  
 
 import AdSupport
 import AppTrackingTransparency
@@ -103,7 +103,7 @@ public class JsonGenerator {
 
         // First add all appropriate data that was added with the set command. ^MB
         switch type {
-        case OSBEventType.pageview.rawValue:
+        case OSBHitType.pageview.rawValue:
             if let pageData = getSetDataForType(type: OSBSetType.page) {
                 for page in pageData {
                     for (key, value) in page {
@@ -112,11 +112,11 @@ public class JsonGenerator {
                 }
             }
             break
-        case OSBEventType.event.rawValue:
+        case OSBHitType.event.rawValue:
             if let eventData = getSetDataForType(type: OSBSetType.event) {
                 for event in eventData {
                     for (key, value) in event {
-                        if isSpecialKey(key: key, eventType: OSBEventType.event) {
+                        if isSpecialKey(key: key, eventType: OSBHitType.event) {
                             hitObj[key] = value
                         } else {
                             dataObj[key] = value
@@ -125,7 +125,7 @@ public class JsonGenerator {
                 }
             }
             break
-        case OSBEventType.action.rawValue:
+        case OSBHitType.action.rawValue:
             if let actionData = getSetDataForType(type: OSBSetType.item) {
 //                var itemsObject = [[String: Any]]()
 //                for action in actionData {
@@ -139,7 +139,7 @@ public class JsonGenerator {
 //                }
             }
             break
-        case OSBEventType.viewable_impression.rawValue:
+        case OSBHitType.viewable_impression.rawValue:
             if let viData = getSetDataForType(type: OSBSetType.viewable_impression) {
                 for viewableImpression in viData {
                     for (key, value) in viewableImpression {
@@ -162,7 +162,7 @@ public class JsonGenerator {
 
         for object in data {
             for (key, value) in object {
-                if let osbEventType = OSBEventType(rawValue: type), isSpecialKey(key: key, eventType: osbEventType) {
+                if let osbHitType = OSBHitType(rawValue: type), isSpecialKey(key: key, eventType: osbHitType) {
                     hitObj[key] = value
                 } else {
                     dataObj[key] = value
@@ -175,12 +175,14 @@ public class JsonGenerator {
         return hitObj
     }
 
-    fileprivate func isSpecialKey(key: String, eventType: OSBEventType) -> Bool {
+    fileprivate func isSpecialKey(key: String, eventType: OSBHitType) -> Bool {
         switch eventType {
-        case OSBEventType.event:
+        case OSBHitType.event:
             return key == "category" || key == "value" || key == "label" || key == "action"
-        case OSBEventType.aggregate:
+        case OSBHitType.aggregate:
             return key == "scope" || key == "name" || key == "value" || key == "aggregate"
+        case OSBHitType.screenview:
+            return key == "sn" || key == "cn"
         default:
             return false
         }
@@ -306,7 +308,7 @@ public class JsonGenerator {
     fileprivate func getTypeIdentifier() -> String {
         // Get the type of the hits
         if type == "screenview" {
-            return "sv"
+            return "screenview"
         } else if type == "pageview" {
             return "pageview"
         } else if type == "action" {
