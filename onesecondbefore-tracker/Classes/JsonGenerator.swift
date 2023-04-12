@@ -4,7 +4,7 @@
 //  Copyright (c) 2023 Onesecondbefore B.V. All rights reserved.
 //  This Source Code Form is subject to the terms of the Mozilla Public
 //  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.  
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AdSupport
 import AppTrackingTransparency
@@ -116,7 +116,7 @@ public class JsonGenerator {
             if let eventData = getSetDataForType(type: OSBSetType.event) {
                 for event in eventData {
                     for (key, value) in event {
-                        if isSpecialKey(key: key, eventType: OSBHitType.event) {
+                        if isSpecialKey(key: key, hitType: OSBHitType.event) {
                             hitObj[key] = value
                         } else {
                             dataObj[key] = value
@@ -126,26 +126,16 @@ public class JsonGenerator {
             }
             break
         case OSBHitType.action.rawValue:
-            if let actionData = getSetDataForType(type: OSBSetType.item) {
-//                var itemsObject = [[String: Any]]()
-//                for action in actionData {
-//                    for (key, value) in action {
-//                        itemsObject[key] = value
-//                    }
-//                }
-//
-//                if !itemsObject.isEmpty {
-                hitObj["items"] = actionData
-//                }
-            }
-            break
-        case OSBHitType.viewable_impression.rawValue:
-            if let viData = getSetDataForType(type: OSBSetType.viewable_impression) {
-                for viewableImpression in viData {
-                    for (key, value) in viewableImpression {
+            if let actionData = getSetDataForType(type: OSBSetType.action) {
+                for action in actionData {
+                    for (key, value) in action {
                         dataObj[key] = value
                     }
                 }
+            }
+
+            if let itemData = getSetDataForType(type: OSBSetType.item) {
+                hitObj["items"] = itemData
             }
             break
         default:
@@ -162,7 +152,7 @@ public class JsonGenerator {
 
         for object in data {
             for (key, value) in object {
-                if let osbHitType = OSBHitType(rawValue: type), isSpecialKey(key: key, eventType: osbHitType) {
+                if let osbHitType = OSBHitType(rawValue: type), isSpecialKey(key: key, hitType: osbHitType) {
                     hitObj[key] = value
                 } else {
                     dataObj[key] = value
@@ -175,8 +165,8 @@ public class JsonGenerator {
         return hitObj
     }
 
-    fileprivate func isSpecialKey(key: String, eventType: OSBHitType) -> Bool {
-        switch eventType {
+    fileprivate func isSpecialKey(key: String, hitType: OSBHitType) -> Bool {
+        switch hitType {
         case OSBHitType.event:
             return key == "category" || key == "value" || key == "label" || key == "action"
         case OSBHitType.aggregate:
@@ -254,28 +244,9 @@ public class JsonGenerator {
         return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
     }
 
-    fileprivate func getUsedDiskSpace() -> String {
-        let usedSpaceInBytes = totalDiskSpaceInBytes() - freeDiskSpaceInBytes()
-        if usedSpaceInBytes > 0 {
-            return ByteCountFormatter.string(fromByteCount: usedSpaceInBytes, countStyle: ByteCountFormatter.CountStyle.binary)
-        }
-        return ""
-    }
-
     fileprivate func totalDiskSpaceInBytes() -> Int64 {
         do {
             guard let totalDiskSpaceInBytes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory())[FileAttributeKey.systemSize] as? Int64 else {
-                return 0
-            }
-            return totalDiskSpaceInBytes
-        } catch {
-            return 0
-        }
-    }
-
-    fileprivate func freeDiskSpaceInBytes() -> Int64 {
-        do {
-            guard let totalDiskSpaceInBytes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory())[FileAttributeKey.systemFreeSize] as? Int64 else {
                 return 0
             }
             return totalDiskSpaceInBytes

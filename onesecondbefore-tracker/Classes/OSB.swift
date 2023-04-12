@@ -27,8 +27,6 @@ public enum OSBSetType: String {
     case event
     case item
     case page
-    case viewable_impression
-    case none
 }
 
 public enum OSBError: Error {
@@ -219,6 +217,23 @@ public class OSB {
 
         try send(type: OSBHitType.screenview, data: [actionData])
     }
+    
+    public func sendPageView(url: String, title: String) throws {
+        try sendPageView(url: url, title: title, referrer: "", data: [String: Any]())
+    }
+
+    public func sendPageView(url: String, title: String, referrer: String) throws {
+        try sendPageView(url: url, title: title, referrer: referrer, data: [String: Any]())
+    }
+
+    public func sendPageView(url: String, title: String, referrer: String, data: [String: Any]) throws {
+        var actionData: [String: Any] = data
+        actionData["url"] = url
+        actionData["ttl"] = title
+        actionData["ref"] = referrer
+
+        try send(type: OSBHitType.pageview, data: [actionData])
+    }
 
     public func send(type: OSBHitType) throws {
         try send(type: type, actionType: "", data: [[String: Any]]())
@@ -293,26 +308,6 @@ public class OSB {
     @available(*, deprecated, renamed: "config")
     public func create(accountId: String, url: String, siteId: String) {
         config(accountId: accountId, url: url, siteId: siteId)
-    }
-
-    @available(*, deprecated, message: "Please use send() with OSBHitType.pageview")
-    public func sendPageView(url: String, title: String) throws {
-        try sendPageView(url: url, title: title, referrer: "", data: [String: Any]())
-    }
-
-    @available(*, deprecated, message: "Please use send() with OSBHitType.pageview")
-    public func sendPageView(url: String, title: String, referrer: String) throws {
-        try sendPageView(url: url, title: title, referrer: referrer, data: [String: Any]())
-    }
-
-    @available(*, deprecated, message: "Please use send() with OSBHitType.pageview")
-    public func sendPageView(url: String, title: String, referrer: String, data: [String: Any]) throws {
-        var actionData: [String: Any] = data
-        actionData["url"] = url
-        actionData["ttl"] = title
-        actionData["ref"] = referrer
-
-        try send(type: OSBHitType.pageview, data: [actionData])
     }
 
     // MARK: - Private functions
