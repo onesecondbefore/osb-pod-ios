@@ -182,7 +182,7 @@ public class OSB {
         try send(type: OSBHitType.event, data: [actionData])
     }
 
-    public func sendAggregateEvent(scope: String, name: String, aggregateType: OSBAggregateType, value: Double) throws {
+    public func sendAggregate(scope: String, name: String, aggregateType: OSBAggregateType, value: Double) throws {
         var actionData = [String: Any]()
         if !scope.isEmpty {
             actionData["scope"] = scope
