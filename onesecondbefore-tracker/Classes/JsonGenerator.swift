@@ -87,7 +87,7 @@ public class JsonGenerator {
 
     fileprivate func getPageInfo() -> [String: Any] {
         let pvInfoData: [String: Any] = [
-            "vid": viewId,
+            "view_id": viewId,
         ]
         return pvInfoData
     }
@@ -194,7 +194,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "6.0." + getGitHash(),
+            "tv": "6.1." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,

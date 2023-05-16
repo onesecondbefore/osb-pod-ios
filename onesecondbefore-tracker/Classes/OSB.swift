@@ -320,10 +320,6 @@ public class OSB {
         return viewId
     }
 
-    @objc private func applicationWillEnterForeground(_ notification: NSNotification) {
-        viewId = generateRandomString()
-    }
-
     private func generateRandomString(length: Int = 8) -> String {
         let alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0 ..< length).map { _ in alphabet.randomElement()! })
