@@ -64,13 +64,6 @@ public class OSB {
         if viewId.isEmpty {
             viewId = generateRandomString()
         }
-
-        // Listen to life cycle notification to reset viewId.
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(applicationWillEnterForeground(_:)),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil)
     }
 
     public static let instance: OSB = {
@@ -233,6 +226,8 @@ public class OSB {
         actionData["ref"] = referrer
 
         try send(type: OSBHitType.pageview, data: [actionData])
+        // Store data object for next send() ^MB
+        set(type: .page, data: [actionData]);
     }
 
     public func send(type: OSBHitType) throws {

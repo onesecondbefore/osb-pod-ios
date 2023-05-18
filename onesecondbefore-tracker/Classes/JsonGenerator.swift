@@ -100,18 +100,18 @@ public class JsonGenerator {
         // Forms data and generate response
         var hitObj = [String: Any]()
         var dataObj = [String: Any]()
+        
+        // Always add page data ^MB
+        if let pageData = getSetDataForType(type: OSBSetType.page) {
+            for page in pageData {
+                for (key, value) in page {
+                    dataObj[key] = value
+                }
+            }
+        }
 
         // First add all appropriate data that was added with the set command. ^MB
         switch type {
-        case OSBHitType.pageview.rawValue:
-            if let pageData = getSetDataForType(type: OSBSetType.page) {
-                for page in pageData {
-                    for (key, value) in page {
-                        dataObj[key] = value
-                    }
-                }
-            }
-            break
         case OSBHitType.event.rawValue:
             if let eventData = getSetDataForType(type: OSBSetType.event) {
                 for event in eventData {
