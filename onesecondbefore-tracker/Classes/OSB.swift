@@ -64,13 +64,6 @@ public class OSB {
         if viewId.isEmpty {
             viewId = generateRandomString()
         }
-
-        // Listen to life cycle notification to reset viewId.
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(applicationWillEnterForeground(_:)),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil)
     }
 
     public static let instance: OSB = {
@@ -182,7 +175,7 @@ public class OSB {
         try send(type: OSBHitType.event, data: [actionData])
     }
 
-    public func sendAggregateEvent(scope: String, name: String, aggregateType: OSBAggregateType, value: Double) throws {
+    public func sendAggregate(scope: String, name: String, aggregateType: OSBAggregateType, value: Double) throws {
         var actionData = [String: Any]()
         if !scope.isEmpty {
             actionData["scope"] = scope
@@ -233,6 +226,8 @@ public class OSB {
         actionData["ref"] = referrer
 
         try send(type: OSBHitType.pageview, data: [actionData])
+        // Store data object for next send() ^MB
+        set(type: .page, data: [actionData]);
     }
 
     public func send(type: OSBHitType) throws {
@@ -318,10 +313,6 @@ public class OSB {
         }
 
         return viewId
-    }
-
-    @objc private func applicationWillEnterForeground(_ notification: NSNotification) {
-        viewId = generateRandomString()
     }
 
     private func generateRandomString(length: Int = 8) -> String {

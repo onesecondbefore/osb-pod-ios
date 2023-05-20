@@ -36,7 +36,7 @@ class ViewController: UIViewController {
             // OSB - Aggregate event
             // JS: osb("send", "aggregate", "scrolledepth", "max", 0.8, "scope");
             //
-             try osb.sendAggregateEvent(scope: "scope", name: "scrolledepth", aggregateType: OSBAggregateType.max, value: 0.8)
+             try osb.sendAggregate(scope: "scope", name: "scrolledepth", aggregateType: OSBAggregateType.max, value: 0.8)
             
             // OSB - Event
             // JS: osb("send", "event", { "category": "Category", "label": "Label", "action":"Action", "value": 1, "extra1": "a", "extra2": 3.1415});
