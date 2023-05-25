@@ -173,6 +173,8 @@ public class JsonGenerator {
             return key == "scope" || key == "name" || key == "value" || key == "aggregate"
         case OSBHitType.screenview:
             return key == "sn" || key == "cn"
+        case OSBHitType.pageview:
+            return key == "title" || key == "id" || key == "url" || key == "referrer" || key == "osc_id" || key == "osc_label" || key == "oss_keyword" || key == "oss_category" || key == "oss_total_results" || key == "oss_results_per_page" || key == "oss_current_page"
         default:
             return false
         }
@@ -194,7 +196,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "6.1." + getGitHash(),
+            "tv": "6.2." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
