@@ -105,7 +105,11 @@ public class JsonGenerator {
         if let pageData = getSetDataForType(type: OSBSetType.page) {
             for page in pageData {
                 for (key, value) in page {
-                    dataObj[key] = value
+                    if isSpecialKey(key: key, hitType: OSBHitType.pageview) {
+                        hitObj[key] = value
+                    } else {
+                        dataObj[key] = value
+                    }
                 }
             }
         }
@@ -196,7 +200,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "6.2." + getGitHash(),
+            "tv": "6.3." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
