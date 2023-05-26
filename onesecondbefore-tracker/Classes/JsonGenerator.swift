@@ -86,9 +86,21 @@ public class JsonGenerator {
     }
 
     fileprivate func getPageInfo() -> [String: Any] {
-        let pvInfoData: [String: Any] = [
+        var pvInfoData: [String: Any] = [
             "view_id": viewId,
         ]
+        
+        // Make sure to only add 'special' page keys from the set(page) data, other data will be added to hits->data object. ^MB
+        if let pageData = getSetDataForType(type: OSBSetType.page) {
+            for page in pageData {
+                for (key, value) in page {
+                    if isSpecialKey(key: key, hitType: OSBHitType.pageview) {
+                        pvInfoData[key] = value
+                    }
+                }
+            }
+        }
+        
         return pvInfoData
     }
 
@@ -105,11 +117,9 @@ public class JsonGenerator {
         if let pageData = getSetDataForType(type: OSBSetType.page) {
             for page in pageData {
                 for (key, value) in page {
-                    if isSpecialKey(key: key, hitType: OSBHitType.pageview) {
-                        hitObj[key] = value
-                    } else {
+                    if !isSpecialKey(key: key, hitType: OSBHitType.pageview) {
                         dataObj[key] = value
-                    }
+                    } // If it's a special key we will have added it to the page (pg) object ^MB
                 }
             }
         }
@@ -200,7 +210,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "6.3." + getGitHash(),
+            "tv": "6.4." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
