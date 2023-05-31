@@ -143,7 +143,11 @@ public class JsonGenerator {
             if let actionData = getSetDataForType(type: OSBSetType.action) {
                 for action in actionData {
                     for (key, value) in action {
-                        dataObj[key] = value
+                        if isSpecialKey(key: key, hitType: OSBHitType.action) {
+                            hitObj[key] = value
+                        } else {
+                            dataObj[key] = value
+                        }
                     }
                 }
             }
@@ -182,13 +186,15 @@ public class JsonGenerator {
     fileprivate func isSpecialKey(key: String, hitType: OSBHitType) -> Bool {
         switch hitType {
         case OSBHitType.event:
-            return key == "category" || key == "value" || key == "label" || key == "action"
+            return key == "category" || key == "value" || key == "label" || key == "action" || key == "interaction"
         case OSBHitType.aggregate:
             return key == "scope" || key == "name" || key == "value" || key == "aggregate"
         case OSBHitType.screenview:
             return key == "sn" || key == "cn"
         case OSBHitType.pageview:
-            return key == "title" || key == "id" || key == "url" || key == "referrer" || key == "osc_id" || key == "osc_label" || key == "oss_keyword" || key == "oss_category" || key == "oss_total_results" || key == "oss_results_per_page" || key == "oss_current_page"
+            return key == "title" || key == "id" || key == "url" || key == "ref" || key == "osc_id" || key == "osc_label" || key == "oss_keyword" || key == "oss_category" || key == "oss_total_results" || key == "oss_results_per_page" || key == "oss_current_page"
+        case OSBHitType.action:
+            return key == "tax" || key == "id" || key == "discount" || key == "currencyCode" || key == "revenue" || key == "currency_code"
         default:
             return false
         }
@@ -210,7 +216,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "6.4." + getGitHash(),
+            "tv": "6.5." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
