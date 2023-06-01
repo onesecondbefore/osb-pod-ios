@@ -151,8 +151,12 @@ public class OSB {
         try sendEvent(category: category, action: action, label: label, value: value,
                       data: [String: Any]())
     }
-
     public func sendEvent(category: String, action: String, label: String, value: String, data: [String: Any]) throws {
+        try sendEvent(category: category, action: action, label: label, value: value, data: data, interaction: nil)
+    }
+        
+
+    public func sendEvent(category: String, action: String, label: String, value: String, data: [String: Any], interaction: Bool?) throws {
         hitsData = data
         var actionData = [String: Any]()
 
@@ -170,6 +174,10 @@ public class OSB {
 
         if !value.isEmpty {
             actionData["value"] = value
+        }
+            
+        if let interaction = interaction {
+            actionData["interaction"] = String(interaction)
         }
 
         try send(type: OSBHitType.event, data: [actionData])
@@ -218,14 +226,36 @@ public class OSB {
     public func sendPageView(url: String, title: String, referrer: String) throws {
         try sendPageView(url: url, title: title, referrer: referrer, data: [String: Any]())
     }
-
+    
+    public func sendPageView(url: String, title: String, referrer: String, id: String) throws {
+        try sendPageView(url: url, title: title, referrer: referrer, data: [String: Any]())
+    }
+    
     public func sendPageView(url: String, title: String, referrer: String, data: [String: Any]) throws {
+        try sendPageView(url: url, title: title, referrer: referrer, data: data, id: "")
+    }
+    
+    public func sendPageView(url: String, title: String, referrer: String, data: [String: Any], id: String) throws {
+        try sendPageView(url: url, title: title, referrer: referrer, data: data, id: id, osc_id: "", osc_label: "", oss_keyword: "", oss_category: "", oss_total_results: "", oss_results_per_page: "", oss_current_page: "")
+    }
+
+    public func sendPageView(url: String, title: String, referrer: String, data: [String: Any], id: String, osc_id: String, osc_label: String, oss_keyword: String, oss_category: String, oss_total_results: String, oss_results_per_page: String, oss_current_page: String) throws {
         var actionData: [String: Any] = data
         actionData["url"] = url
-        actionData["ttl"] = title
+        actionData["title"] = title
         actionData["ref"] = referrer
+        actionData["id"] = id
+        actionData["osc_id"] = osc_id
+        actionData["osc_label"] = osc_label
+        actionData["oss_keyword"] = oss_keyword
+        actionData["oss_category"] = oss_category
+        actionData["oss_total_results"] = oss_total_results
+        actionData["oss_results_per_page"] = oss_results_per_page
+        actionData["oss_current_page"] = oss_current_page
 
+        
         try send(type: OSBHitType.pageview, data: [actionData])
+        
         // Store data object for next send() ^MB
         set(type: .page, data: [actionData]);
     }
