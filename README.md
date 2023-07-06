@@ -6,12 +6,7 @@
 
 ## Installation
 
-onesecondbefore-tracker is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod 'onesecondbefore-tracker'
-```
+See [reference](https://www.onesecondbefore.com/resources/analytics/installation/#ios).
 
 ## Documentation
 
