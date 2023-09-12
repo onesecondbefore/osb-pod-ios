@@ -298,6 +298,8 @@ public class OSB {
                                       setDataObject: setDataObject)
 
         let jsonData = generator.generateJsonResponse()
+        
+        resetData()
 
         if info.debugMode { // Debug mode
             print(jsonData ?? "")
@@ -348,5 +350,28 @@ public class OSB {
     private func generateRandomString(length: Int = 8) -> String {
         let alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0 ..< length).map { _ in alphabet.randomElement()! })
+    }
+    
+    private func resetData() {
+        eventData = [String: Any]()
+        hitsData = [String: Any]()
+        ids = [[String: Any]]()
+        set(type: .item, data: [[String: Any]]())
+        set(type: .item, data: [[String: Any]]())
+        
+        let pageData = setDataObject["page"] as? [[String: Any]]
+        if var page = pageData?.first {
+            page["oss_category"] = nil;
+            page["oss_keyword"] = nil;
+            page["oss_total_results"] = nil;
+            page["oss_results_per_page"] = nil;
+            page["oss_current_page"] = nil;
+            
+            // Should these two be implemented as well? ^MB
+            page["onsite_search"] = nil;
+            page["onsite_campaign"] = nil;
+     
+            set(type: .page, data: [page])
+        }
     }
 }
