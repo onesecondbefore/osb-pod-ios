@@ -81,7 +81,7 @@ class ViewController: UIViewController {
             // JS: osb("set", "ids", [{ "key": "a3", "value": "12345"}]);
             // JS: osb("send", "pageview");
             //
-            // osb.setIds(data: [["key": "a3", "value": "12345"], ["key": "a3-1", "value": "12345-1"]])
+             osb.setIds(data: [["key": "a3", "value": "12345"], ["key": "a3-1", "value": "12345-1"]])
             // try osb.send(type: .pageview)
 
             // OSB - CONSENT + page data
@@ -90,7 +90,7 @@ class ViewController: UIViewController {
             // JS: osb.send("pageview", {"b": 2});
             //
             osb.setConsent(data: ["marketing", "social", "functional", "advertising"])
-            osb.set(type: .page, data: [["article": 123]])
+            osb.set(type: .page, data: [["article": 123, "oss_category" : "OSS category"]])
             try osb.send(type: .pageview, data: [["b": 2]])
             try osb.send(type: .pageview)
 
