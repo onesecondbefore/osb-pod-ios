@@ -299,7 +299,7 @@ public class OSB {
 
         let jsonData = generator.generateJsonResponse()
         
-        resetData()
+        removeHitScope()
 
         if info.debugMode { // Debug mode
             print(jsonData ?? "")
@@ -308,6 +308,40 @@ public class OSB {
         if let data = jsonData {
             // Add the response data to queue
             apiQueue.addToQueue(info.serverUrl, data: data)
+        }
+    }
+    
+    public func remove() {
+        remove(type: "action")
+        remove(type: "event")
+        remove(type: "item")
+        remove(type: "page")
+        remove(type: "hits")
+        remove(type: "ids")
+    }
+    
+    public func remove(type: String) {
+        switch type {
+            case "action":
+                set(type: .action, data: [[String: Any]]())
+                break
+            case "event":
+                eventData = [String: Any]()
+                break
+            case "item":
+                set(type: .item, data: [[String: Any]]())
+                break
+            case "page":
+                set(type: .page, data: [[String: Any]]())
+                break
+            case "hits":
+                hitsData = [String: Any]()
+                break
+            case "ids":
+                ids = [[String: Any]]()
+                break
+            default:
+                break
         }
     }
 
@@ -336,6 +370,11 @@ public class OSB {
     public func create(accountId: String, url: String, siteId: String) {
         config(accountId: accountId, url: url, siteId: siteId)
     }
+    
+    @available(*, deprecated, renamed: "remove")
+    public func reset() {
+        remove()
+    }
 
     // MARK: - Private functions
 
@@ -352,12 +391,12 @@ public class OSB {
         return String((0 ..< length).map { _ in alphabet.randomElement()! })
     }
     
-    private func resetData() {
+    private func removeHitScope() {
         eventData = [String: Any]()
         hitsData = [String: Any]()
         ids = [[String: Any]]()
         set(type: .item, data: [[String: Any]]())
-        set(type: .item, data: [[String: Any]]())
+        set(type: .action, data: [[String: Any]]())
         
         let pageData = setDataObject["page"] as? [[String: Any]]
         if var page = pageData?.first {
@@ -366,6 +405,7 @@ public class OSB {
             page["oss_total_results"] = nil;
             page["oss_results_per_page"] = nil;
             page["oss_current_page"] = nil;
+            page["osc_id"] = nil;
             
             // Should these two be implemented as well? ^MB
             page["onsite_search"] = nil;
