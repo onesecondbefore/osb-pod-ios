@@ -17,7 +17,9 @@ import AppTrackingTransparency
 class ViewController: UIViewController {
     
     let osb = OSB.instance
-
+    
+    var timer = Timer()
+ 
     override func viewDidAppear(_ animated: Bool) {
 
         CLLocationManager().requestAlwaysAuthorization()
@@ -43,7 +45,10 @@ class ViewController: UIViewController {
             // After GDPR consent show Apple's Tracker request pop-up
             self.requestTrackingPermission()
 
-            self.sendExampleEvents()
+            self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { _ in
+                self.sendExampleEvents()
+               })
+           
 
         }))
         present(alert, animated: true, completion: nil)
