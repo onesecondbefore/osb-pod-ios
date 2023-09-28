@@ -13,27 +13,41 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
 
     fileprivate var locationManager = CLLocationManager()
     fileprivate var locationIsEnabled = false
+    fileprivate var lastKnownCoordinates: (CLLocationDegrees, CLLocationDegrees) = (0.0, 0.0)
 
     // MARK: - Public functions
 
     public func initialize() {
         locationManager.delegate = self
-    }
-
-    public func getLocationCoordinates() -> (CLLocationDegrees, CLLocationDegrees) {
-        let locManager = CLLocationManager()
-        locManager.delegate = self
-        locManager.distanceFilter = kCLDistanceFilterNone
-        locManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
         if isLocationEnabled() {
-            locManager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
         }
-        let latitude = locManager.location?.coordinate.latitude ?? 0.0
-        let longitude = locManager.location?.coordinate.longitude ?? 0.0
-        return (latitude, longitude)
+    }
+    
+    public func getLocationCoordinates() -> (CLLocationDegrees, CLLocationDegrees) {
+        if isLocationEnabled() {
+            locationManager.startUpdatingLocation()
+        }
+        return lastKnownCoordinates
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let locationObj = locations.last {
+            lastKnownCoordinates = (locationObj.coordinate.latitude, locationObj.coordinate.longitude)
+        }
     }
 
     public func isLocationEnabled() -> Bool {
+        let status = CLLocationManager.authorizationStatus()
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            locationIsEnabled = true
+        default:
+            locationIsEnabled = false
+        }
         return locationIsEnabled
     }
 
