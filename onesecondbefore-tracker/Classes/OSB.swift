@@ -215,7 +215,7 @@ public class OSB {
         var actionData: [String: Any] = data
         actionData["sn"] = screenName
         actionData["cn"] = className
-
+        remove(type: "page");
         try send(type: OSBHitType.screenview, data: [actionData])
     }
     
@@ -379,7 +379,7 @@ public class OSB {
     // MARK: - Private functions
 
     private func getViewId(type: OSBHitType) -> String {
-        if type == OSBHitType.pageview {
+        if type == .pageview || type == .screenview {
             viewId = generateRandomString()
         }
 
