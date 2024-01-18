@@ -11,62 +11,29 @@ import CoreLocation
 import onesecondbefore_tracker
 import UIKit
 
+// Needed for requesting Tracking permission
 import AdSupport
 import AppTrackingTransparency
+
 
 class ViewController: UIViewController {
     
     let osb = OSB.instance
-    
     var timer = Timer()
  
     override func viewDidAppear(_ animated: Bool) {
-
+        self.requestTrackingPermission()
         CLLocationManager().requestAlwaysAuthorization()
-
-        // First prompt user for GDPR consent
-        showGDPRConsentPopup()
+        intializeOSB()
     }
-
-    func showGDPRConsentPopup() {
-        let alert = UIAlertController(title: "GDRP Consent", message: "Do you agree?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Yes", style: .default,  handler: { action in
-            switch action.style{
-            case .default:
-                print("GDPR consent - default action.")
-            case .cancel:
-                print("GDPR consent - cancel action.")
-            case .destructive:
-                print("GDPR consent - destructive action.")
-            }
-            
-            self.processGDPRConsent()
-
-            // After GDPR consent show Apple's Tracker request pop-up
-            self.requestTrackingPermission()
-
-            self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { _ in
-                self.sendExampleEvents()
-               })
-           
-
-        }))
-        present(alert, animated: true, completion: nil)
-    }
-
-    func processGDPRConsent() {
-
+    
+    func intializeOSB() {
         // OSB configuration
         let accountId = "development"
         let serverUrl = "https://enbxr4mb0mcla.x.pipedream.net"
         osb.config(accountId: accountId, url: serverUrl, siteId: "osbdemo.app")
 
         osb.debug(true) // Enabling debug will print the JSON that is sent to the OSB server.
-
-        // OSB - setting consent
-        osb.setConsent(data: ["marketing", "social", "functional", "advertising"])
-        // or
-        //  osb.setConsent(data: "consent-string-identifier-1234-abcd");
     }
 
     func sendExampleEvents() {
@@ -94,7 +61,7 @@ class ViewController: UIViewController {
             // JS: osb.set("page", {"article": 123})
             // JS: osb.send("pageview", {"b": 2});
             //
-            osb.setConsent(data: ["marketing", "social", "functional", "advertising"])
+//            osb.setConsent(data: ["marketing", "social", "functional", "advertising"])
             osb.set(type: .page, data: [["article": 123, "oss_category" : "OSS category"]])
             try osb.send(type: .pageview, data: [["b": 2]])
             try osb.send(type: .pageview)
@@ -119,7 +86,19 @@ class ViewController: UIViewController {
             print("OSB error")
         }
     }
-
+    
+    @IBAction func showConsentWebviewButtonPressed(_ sender: UIButton) {
+        osb.showConsentWebview(parentView: self.view)
+    }
+    
+    @IBAction func forceConsentWebviewButtonPressed(_ sender: UIButton) {
+        osb.showConsentWebview(parentView: self.view, forceShow: true)
+    }
+    
+    @IBAction func requestTrackingButtonPressed(_ sender: UIButton) {
+        self.requestTrackingPermission()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

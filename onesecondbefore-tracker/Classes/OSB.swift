@@ -8,6 +8,9 @@
 
 import Foundation
 import UIKit
+import WebKit
+import AppTrackingTransparency
+import AdSupport
 
 public enum OSBHitType: String {
     case ids
@@ -41,7 +44,7 @@ public enum OSBAggregateType: String {
     case average = "avg"
 }
 
-public class OSB {
+public class OSB: NSObject {
 
     // MARK: - Private variables
 
@@ -59,11 +62,17 @@ public class OSB {
     // MARK: - Static variables
 
     static let UDConsentKey = "osb-defaults-consent"
+    static let UDConsentExpirationKey = "osb-defaults-consent-exp"
 
-    private init() {
+    private override init() {
+        super.init()
         if viewId.isEmpty {
             viewId = generateRandomString()
         }
+        
+        // link to osbCmpMessageHandler callback from consent webview. ^MB
+        let contentController = self.osbConsentWebview.configuration.userContentController
+        contentController.add(self, name: "osbCmpMessageHandler")
     }
 
     public static let instance: OSB = {
@@ -72,6 +81,34 @@ public class OSB {
     }()
 
     // MARK: - Public functions
+    
+    public func showConsentWebview(parentView: UIView, forceShow: Bool = false) {
+        if (forceShow || shouldShowConsentWebview()){
+            if let url = getConsentWebviewURL() {
+                parentView.addSubview(osbConsentWebview)
+                
+                NSLayoutConstraint.activate([
+                    osbConsentWebview.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+                    osbConsentWebview.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+                    osbConsentWebview.bottomAnchor.constraint(equalTo: parentView.layoutMarginsGuide.bottomAnchor),
+                    osbConsentWebview.topAnchor.constraint(equalTo: parentView.layoutMarginsGuide.topAnchor)
+                ])
+                
+                osbConsentWebview.load(URLRequest(url: url))
+            }
+        }
+    }
+
+    
+    private lazy var osbConsentWebview: WKWebView = {
+        let osbConsentWebview = WKWebView()
+        osbConsentWebview.translatesAutoresizingMaskIntoConstraints = false
+        return osbConsentWebview
+    }()
+    
+    func hideConsentWebview() {
+        osbConsentWebview.removeFromSuperview()
+    }
 
     public func clear() {
         initialised = false
@@ -295,7 +332,10 @@ public class OSB {
                                       viewId: getViewId(type: type),
                                       consent: getConsent(),
                                       ids: ids,
-                                      setDataObject: setDataObject)
+                                      setDataObject: setDataObject,
+                                      idfa: getIDFA(),
+                                      idfv: getIDFV())
+                                        
 
         let jsonData = generator.generateJsonResponse()
         
@@ -344,7 +384,8 @@ public class OSB {
                 break
         }
     }
-
+    
+   
     // MARK: - Deprecated functions
     
     @available(*, deprecated, renamed: "OSBHitType")
@@ -412,6 +453,136 @@ public class OSB {
             page["onsite_campaign"] = nil;
      
             set(type: .page, data: [page])
+        }
+    }
+    
+    private func stringify(json: Any, prettyPrinted: Bool = false) -> String {
+        var options: JSONSerialization.WritingOptions = []
+        if prettyPrinted {
+          options = JSONSerialization.WritingOptions.prettyPrinted
+        }
+
+        do {
+          let data = try JSONSerialization.data(withJSONObject: json, options: options)
+          if let string = String(data: data, encoding: String.Encoding.utf8) {
+            return string
+          }
+        } catch {
+          print(error)
+        }
+
+        return ""
+    }
+    
+    fileprivate func getUserUID() -> String {
+        if let idfa = getIDFA(), idfa != "00000000-0000-0000-0000-000000000000" {
+            return idfa
+        }
+        
+        if let idfv = getIDFV() {
+            return idfv
+        }
+        
+        print("OSB Error: could not get userUID")
+        
+        return ""
+    }
+    
+    fileprivate func getIDFA() -> String? {
+        // Check whether advertising tracking is enabled
+        if #available(iOS 14, *) {
+            if ATTrackingManager.trackingAuthorizationStatus != ATTrackingManager.AuthorizationStatus.authorized {
+                return nil
+            }
+        } else {
+            if ASIdentifierManager.shared().isAdvertisingTrackingEnabled == false {
+                return nil
+            }
+        }
+        return ASIdentifierManager.shared().advertisingIdentifier.uuidString
+    }
+    
+    fileprivate func getIDFV() -> String? {
+        if let identifierForVendor = UIDevice.current.identifierForVendor {
+            return identifierForVendor.uuidString
+        }
+        return nil
+    }
+        
+    fileprivate func getConsentWebviewURL() -> URL? {
+        var consent = "";
+        if let consentString = getConsent()?.first {
+            consent = consentString
+        }
+    
+        var siteIdURL = "";
+        if let siteId = info.siteId {
+            siteIdURL = "&sid=" + siteId
+        }
+   
+        let urlString = info.serverUrl + "/consent?aid=" + info.accountId + siteIdURL + "&type=app&show=true&version=" + getOSBSDKVersion() + "&consent=" + consent + "&cduid=" + getUserUID()
+        
+        return URL(string: urlString)
+    }
+    
+    fileprivate func processConsentCallback(consentCallbackString: String) {
+        hideConsentWebview()
+        if let json = convertConsentCallbackToJSON(consentCallbackString: consentCallbackString) {
+            if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int {
+                setConsent(data: consentString)
+                setConsentExpiration(timestamp: expirationDate)
+            }
+        }
+    }
+    
+    fileprivate func convertConsentCallbackToJSON(consentCallbackString: String) -> Dictionary<String, Any>? {
+        let data = consentCallbackString.data(using: .utf8)!
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String, Any>
+            {
+               return json
+            } else {
+                print("OSB Error: Could not parse consentCallbackString to JSON.")
+            }
+        } catch let error as NSError {
+            print(error)
+        }
+        return nil
+    }
+    
+    fileprivate func getOSBSDKVersion() -> String {
+         if let version = Bundle(identifier: "org.cocoapods.onesecondbefore-tracker")?.infoDictionary?["CFBundleShortVersionString"] as? String {
+             return version;
+         }
+        
+        return "unknown"
+     }
+    
+    fileprivate func setConsentExpiration(timestamp: Int) {
+        let defaults = UserDefaults.standard
+        defaults.set(timestamp, forKey: OSB.UDConsentExpirationKey)
+    }
+
+    fileprivate func getConsentExpiration() -> Int? {
+        let defaults = UserDefaults.standard
+        return defaults.object(forKey: OSB.UDConsentExpirationKey) as? Int
+    }
+    
+    fileprivate func shouldShowConsentWebview() -> Bool {
+        if let expirationDate = getConsentExpiration(), expirationDate > Int(NSDate().timeIntervalSince1970) * 1000 {
+            return false
+        }
+        return true
+    }
+}
+
+extension OSB: WKScriptMessageHandler {
+   
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let consentCallbackString = message.body as? String {
+            processConsentCallback(consentCallbackString: consentCallbackString)
+        } else {
+            print ("OSB error: could not parse consent callback string.")
         }
     }
 }
