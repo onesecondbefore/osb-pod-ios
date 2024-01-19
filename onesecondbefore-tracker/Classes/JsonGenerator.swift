@@ -26,13 +26,14 @@ public class JsonGenerator {
     fileprivate var setDataObject: [String: Any]?
     fileprivate var idfa: String?
     fileprivate var idfv: String?
+    fileprivate var cduid: String?
 
     // MARK: - Public functions
 
     init(_ type: String, data: [[String: Any]], info: OSBInfo?, subType: String,
          latitude: Double, longitude: Double, isLocEnabled: Bool,
          eventKey: String, eventData: [String: Any], hitsData: [String: Any],
-         viewId: String, consent: [String]?, ids: [[String: Any]]?, setDataObject: [String: Any]?, idfa: String?, idfv: String?) {
+         viewId: String, consent: [String]?, ids: [[String: Any]]?, setDataObject: [String: Any]?, idfa: String?, idfv: String?, cduid: String?) {
         self.type = type
         self.data = data
         self.info = info
@@ -49,6 +50,7 @@ public class JsonGenerator {
         self.setDataObject = setDataObject
         self.idfa = idfa
         self.idfv = idfv
+        self.cduid = cduid
     }
 
     public func generateJsonResponse() -> String? {
@@ -241,6 +243,7 @@ public class JsonGenerator {
         let deviceInfoData: [String: Any] = [
             "idfa": idfa ?? NSNull(),
             "idfv": idfv ?? NSNull(),
+            "cduid": cduid ?? NSNull(),
             "tz": TimeZone.current.secondsFromGMT() / 60,
             "lang": lang,
             "conn": NetworkManager().getConnectionMode(),

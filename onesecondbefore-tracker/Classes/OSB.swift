@@ -63,6 +63,8 @@ public class OSB: NSObject {
 
     static let UDConsentKey = "osb-defaults-consent"
     static let UDConsentExpirationKey = "osb-defaults-consent-exp"
+    static let UDCDUIDKey = "osb-defaults-cduid"
+    
 
     private override init() {
         super.init()
@@ -334,7 +336,8 @@ public class OSB: NSObject {
                                       ids: ids,
                                       setDataObject: setDataObject,
                                       idfa: getIDFA(),
-                                      idfv: getIDFV())
+                                      idfv: getIDFV(),
+                                      cduid: getCDUID())
                                         
 
         let jsonData = generator.generateJsonResponse()
@@ -475,6 +478,10 @@ public class OSB: NSObject {
     }
     
     fileprivate func getUserUID() -> String {
+        if let cduid = getCDUID() {
+            return cduid
+        }
+        
         if let idfa = getIDFA(), idfa != "00000000-0000-0000-0000-000000000000" {
             return idfa
         }
@@ -528,9 +535,10 @@ public class OSB: NSObject {
     fileprivate func processConsentCallback(consentCallbackString: String) {
         hideConsentWebview()
         if let json = convertConsentCallbackToJSON(consentCallbackString: consentCallbackString) {
-            if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int {
+            if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String {
                 setConsent(data: consentString)
                 setConsentExpiration(timestamp: expirationDate)
+                setCDUID(cduid: cduid)
             }
         }
     }
@@ -573,6 +581,16 @@ public class OSB: NSObject {
             return false
         }
         return true
+    }
+    
+    fileprivate func setCDUID(cduid: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(cduid, forKey: OSB.UDCDUIDKey)
+    }
+
+    fileprivate func getCDUID() -> String? {
+        let defaults = UserDefaults.standard
+        return defaults.object(forKey: OSB.UDCDUIDKey) as? String
     }
 }
 
