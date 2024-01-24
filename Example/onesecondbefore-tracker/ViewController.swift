@@ -22,22 +22,35 @@ class ViewController: UIViewController {
     var timer = Timer()
  
     override func viewDidAppear(_ animated: Bool) {
-        self.requestTrackingPermission()
-        CLLocationManager().requestAlwaysAuthorization()
         intializeOSB()
     }
     
     func intializeOSB() {
         // OSB configuration
-        let accountId = "development"
-        let serverUrl = "https://enbxr4mb0mcla.x.pipedream.net"
-        osb.config(accountId: accountId, url: serverUrl, siteId: "osbdemo.app")
-
+        let accountId = "demo"
+        let serverUrl = "https://c.onesecondbefore.com/"
+        
+        osb.config(accountId: accountId, url: serverUrl, siteId: "demo.app")
         osb.debug(true) // Enabling debug will print the JSON that is sent to the OSB server.
     }
+    
+    @IBAction func requestTrackingButtonPressed(_ sender: UIButton) {
+        self.requestTrackingPermission()
+    }
+    
+    @IBAction func requestLocationButtonPressed(_ sender: UIButton) {
+        CLLocationManager().requestAlwaysAuthorization()
+    }
+    
+    @IBAction func showCMPButtonPressed(_ sender: UIButton) {
+        osb.showConsentWebview(parentView: self.view)
+    }
+    
+    @IBAction func resurfaceCMPButtonPressed(_ sender: UIButton) {
+        osb.showConsentWebview(parentView: self.view, forceShow: true)
+    }
 
-    func sendExampleEvents() {
-
+    @IBAction func sendExampleEventsButtonPressed(_ sender: UIButton) {
         do {
             // OSB - Aggregate event
             // JS: osb("send", "aggregate", "scrolledepth", "max", 0.8, "scope");
@@ -87,17 +100,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func showConsentWebviewButtonPressed(_ sender: UIButton) {
-        osb.showConsentWebview(parentView: self.view)
-    }
-    
-    @IBAction func forceConsentWebviewButtonPressed(_ sender: UIButton) {
-        osb.showConsentWebview(parentView: self.view, forceShow: true)
-    }
-    
-    @IBAction func requestTrackingButtonPressed(_ sender: UIButton) {
-        self.requestTrackingPermission()
-    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -111,21 +114,20 @@ class ViewController: UIViewController {
                 case .authorized:
                     // Tracking authorization dialog was shown
                     // and we are authorized
-                    print("Authorized")
-
+                    print("Authorized to use IDFA:")
                     // Now that we are authorized we can get the IDFA
                     print(ASIdentifierManager.shared().advertisingIdentifier)
                 case .denied:
                     // Tracking authorization dialog was
                     // shown and permission is denied
-                    print("Denied")
+                    print("Denied to use IDFA")
                 case .notDetermined:
                     // Tracking authorization dialog has not been shown
-                    print("Not Determined")
+                    print("Authorization for using IDFA not yet determined.")
                 case .restricted:
-                    print("Restricted")
+                    print("Use of IDFA is restricted on this device.")
                 @unknown default:
-                    print("Unknown")
+                    print("IDFA authorization unknown,")
                 }
             }
         }

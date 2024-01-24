@@ -27,55 +27,100 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YTu-j9-dNd">
-                                <rect key="frame" x="62.5" y="316.5" width="250.5" height="34.5"/>
+                                <rect key="frame" x="62.5" y="316.5" width="250" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="f5Z-03-XUv"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Force show consent Webview">
+                                <buttonConfiguration key="configuration" style="plain" title="Resurface CMP">
                                     <backgroundConfiguration key="background">
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     </backgroundConfiguration>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="forceConsentWebviewButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="tiZ-an-JxE"/>
+                                    <action selector="resurfaceCMPButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="BGE-Pw-dXT"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYg-NG-Gce">
-                                <rect key="frame" x="111" y="371" width="153" height="35"/>
+                                <rect key="frame" x="62.5" y="186.5" width="250" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="WK4-8D-r8Q"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Request tracking">
+                                <buttonConfiguration key="configuration" style="plain" title="Request Tracking permission">
                                     <backgroundConfiguration key="background">
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     </backgroundConfiguration>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="requestTrackingButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ata-6B-ouA"/>
+                                    <action selector="requestTrackingButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="JMC-n1-C8x"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nQZ-VQ-crK">
+                                <rect key="frame" x="62.5" y="141.5" width="250" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="End-gN-SDc"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Request Location permisson">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="requestLocationButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="LMk-UW-hSE"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kr2-WE-81k">
-                                <rect key="frame" x="48" y="261.5" width="279" height="35"/>
+                                <rect key="frame" x="62.5" y="271.5" width="250" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="2XI-PP-15W"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Show consent Webview if expired">
+                                <buttonConfiguration key="configuration" style="plain" title="Show CMP (if needed)">
                                     <backgroundConfiguration key="background">
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     </backgroundConfiguration>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="showConsentWebviewButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="tcX-zf-Pga"/>
+                                    <action selector="showCMPButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="zaA-Zp-Buq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rxr-oz-cK0">
+                                <rect key="frame" x="62.5" y="401.5" width="250" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="v1P-nS-kYj"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Send example events">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="sendExampleEventsButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="xjJ-kV-G08"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="lhZ-vc-S4x" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="6KK-Ej-lsr"/>
+                            <constraint firstItem="nQZ-VQ-crK" firstAttribute="top" secondItem="lhZ-vc-S4x" secondAttribute="bottom" constant="50" id="86P-Cs-mlQ"/>
                             <constraint firstItem="Kr2-WE-81k" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="8kT-hT-DWN"/>
+                            <constraint firstItem="aYg-NG-Gce" firstAttribute="top" secondItem="nQZ-VQ-crK" secondAttribute="bottom" constant="10" id="9Az-gx-jLM"/>
                             <constraint firstItem="lhZ-vc-S4x" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="C24-wU-oXH"/>
+                            <constraint firstItem="Rxr-oz-cK0" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Ezs-uH-UVd"/>
+                            <constraint firstItem="YTu-j9-dNd" firstAttribute="top" secondItem="Kr2-WE-81k" secondAttribute="bottom" constant="10" id="HXH-eL-vwW"/>
                             <constraint firstItem="YTu-j9-dNd" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="I4H-bX-S0v"/>
-                            <constraint firstItem="aYg-NG-Gce" firstAttribute="top" secondItem="YTu-j9-dNd" secondAttribute="bottom" constant="20" id="Mrk-jg-e7C"/>
-                            <constraint firstItem="YTu-j9-dNd" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="Tpy-Ir-Ie9"/>
+                            <constraint firstItem="nQZ-VQ-crK" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Ogt-wj-juP"/>
                             <constraint firstItem="aYg-NG-Gce" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="XOY-ii-Uj0"/>
-                            <constraint firstItem="YTu-j9-dNd" firstAttribute="top" secondItem="Kr2-WE-81k" secondAttribute="bottom" constant="20" id="iO5-bv-8ky"/>
+                            <constraint firstItem="Kr2-WE-81k" firstAttribute="top" secondItem="aYg-NG-Gce" secondAttribute="bottom" constant="50" id="eBu-Wb-gTk"/>
+                            <constraint firstItem="Rxr-oz-cK0" firstAttribute="top" secondItem="YTu-j9-dNd" secondAttribute="bottom" constant="50" id="eIz-ir-NnZ"/>
                         </constraints>
                     </view>
                 </viewController>
