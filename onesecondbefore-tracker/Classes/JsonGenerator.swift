@@ -6,8 +6,6 @@
 //  License, v. 2.0. If a copy of the MPL was not distributed with this
 //  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import AdSupport
-import AppTrackingTransparency
 import UIKit
 
 public class JsonGenerator {
@@ -26,13 +24,16 @@ public class JsonGenerator {
     fileprivate var consent: [String]?
     fileprivate var ids: [[String: Any]]?
     fileprivate var setDataObject: [String: Any]?
+    fileprivate var idfa: String?
+    fileprivate var idfv: String?
+    fileprivate var cduid: String?
 
     // MARK: - Public functions
 
     init(_ type: String, data: [[String: Any]], info: OSBInfo?, subType: String,
          latitude: Double, longitude: Double, isLocEnabled: Bool,
          eventKey: String, eventData: [String: Any], hitsData: [String: Any],
-         viewId: String, consent: [String]?, ids: [[String: Any]]?, setDataObject: [String: Any]?) {
+         viewId: String, consent: [String]?, ids: [[String: Any]]?, setDataObject: [String: Any]?, idfa: String?, idfv: String?, cduid: String?) {
         self.type = type
         self.data = data
         self.info = info
@@ -47,6 +48,9 @@ public class JsonGenerator {
         self.consent = consent
         self.ids = ids
         self.setDataObject = setDataObject
+        self.idfa = idfa
+        self.idfv = idfv
+        self.cduid = cduid
     }
 
     public func generateJsonResponse() -> String? {
@@ -66,6 +70,8 @@ public class JsonGenerator {
 
         return dataToJson(jsonData)
     }
+    
+
 
     // MARK: - Private functions
 
@@ -216,7 +222,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "6.8." + getGitHash(),
+            "tv": "6.10." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
@@ -233,11 +239,11 @@ public class JsonGenerator {
         let langId = NSLocale.current.languageCode ?? "nl"
         let countryId = NSLocale.current.regionCode ?? "NL"
         let lang = "\(langId)-\(countryId)"
-        let idfa = getIDFA()
 
         let deviceInfoData: [String: Any] = [
             "idfa": idfa ?? NSNull(),
-            "idfv": UIDevice.current.identifierForVendor!.uuidString,
+            "idfv": idfv ?? NSNull(),
+            "cduid": cduid ?? NSNull(),
             "tz": TimeZone.current.secondsFromGMT() / 60,
             "lang": lang,
             "conn": NetworkManager().getConnectionMode(),
@@ -319,19 +325,8 @@ public class JsonGenerator {
         return "event"
     }
 
-    fileprivate func getIDFA() -> String? {
-        // Check whether advertising tracking is enabled
-        if #available(iOS 14, *) {
-            if ATTrackingManager.trackingAuthorizationStatus != ATTrackingManager.AuthorizationStatus.authorized {
-                return nil
-            }
-        } else {
-            if ASIdentifierManager.shared().isAdvertisingTrackingEnabled == false {
-                return nil
-            }
-        }
-        return ASIdentifierManager.shared().advertisingIdentifier.uuidString
-    }
+
+
 
     fileprivate func getGitHash() -> String {
 
