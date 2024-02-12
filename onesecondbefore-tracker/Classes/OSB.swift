@@ -552,6 +552,7 @@ public class OSB: NSObject {
         hideConsentWebview()
         if let json = convertConsentCallbackToJSON(consentCallbackString: consentCallbackString) {
             if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String {
+                decodeAndStoreIABConsent(consentString: consentString)
                 setConsent(data: consentString)
                 setConsentExpiration(timestamp: expirationDate)
                 setCDUID(cduid: cduid)
@@ -659,7 +660,7 @@ public class OSB: NSObject {
             requestRemoteCmpVersion()
             return
         }
-
+        
         if (cmpCheckTimestamp + (24 * 60 * 60) < Int(NSDate().timeIntervalSince1970)){
             requestRemoteCmpVersion()
         }
@@ -688,6 +689,16 @@ public class OSB: NSObject {
             print("OSB error: getCmpVersionUrl() - siteId unknown.")
         }
         return ""
+    }
+    
+    fileprivate func decodeAndStoreIABConsent(consentString: String) {
+        SPTIabTCFApi().consentString = consentString
+    }
+    
+    fileprivate func printAllUD() {
+        for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
+            print("\(key) = \(value) \n")
+        }
     }
 }
 
