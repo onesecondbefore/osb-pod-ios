@@ -119,7 +119,7 @@ public class JsonGenerator {
         var hitObj = [String: Any]()
         var dataObj = [String: Any]()
         
-        // Always add page data ^MB
+        // Always add page, action & info data ^MB
         if let pageData = getSetDataForType(type: OSBSetType.page) {
             for page in pageData {
                 for (key, value) in page {
@@ -128,6 +128,26 @@ public class JsonGenerator {
                     } // If it's a special key we will have added it to the page (pg) object ^MB
                 }
             }
+        }
+        
+        var actionObj = [String: Any]()
+        if let actionData = getSetDataForType(type: OSBSetType.action) {
+            for action in actionData {
+                for (key, value) in action {
+                    if isSpecialKey(key: key, hitType: OSBHitType.action) {
+                        actionObj[key] = value
+                    } else {
+                        dataObj[key] = value
+                    }
+                }
+            }
+        }
+        if !actionObj.isEmpty {
+            hitObj["action"] = actionObj
+        }
+
+        if let itemData = getSetDataForType(type: OSBSetType.item) {
+            hitObj["items"] = itemData
         }
 
         // First add all appropriate data that was added with the set command. ^MB
@@ -146,21 +166,6 @@ public class JsonGenerator {
             }
             break
         default:
-            if let actionData = getSetDataForType(type: OSBSetType.action) {
-                for action in actionData {
-                    for (key, value) in action {
-                        if isSpecialKey(key: key, hitType: OSBHitType.action) {
-                            hitObj[key] = value
-                        } else {
-                            dataObj[key] = value
-                        }
-                    }
-                }
-            }
-
-            if let itemData = getSetDataForType(type: OSBSetType.item) {
-                hitObj["items"] = itemData
-            }
             break
         }
 
@@ -198,7 +203,7 @@ public class JsonGenerator {
         case OSBHitType.pageview:
             return key == "title" || key == "id" || key == "url" || key == "ref" || key == "osc_id" || key == "osc_label" || key == "oss_keyword" || key == "oss_category" || key == "oss_total_results" || key == "oss_results_per_page" || key == "oss_current_page"
         case OSBHitType.action:
-            return key == "tax" || key == "id" || key == "discount" || key == "currencyCode" || key == "revenue" || key == "currency_code"
+            return key == "tax" || key == "id" || key == "discount" || key == "currencyCode" || key == "revenue" || key == "currency_code" || key == "shipping"
         default:
             return false
         }
