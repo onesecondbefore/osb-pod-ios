@@ -552,6 +552,7 @@ public class OSB: NSObject {
         hideConsentWebview()
         if let json = convertConsentCallbackToJSON(consentCallbackString: consentCallbackString) {
             if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String {
+                decodeAndStoreIABConsent(consentString: consentString)
                 setConsent(data: consentString)
                 setConsentExpiration(timestamp: expirationDate)
                 setCDUID(cduid: cduid)
@@ -659,7 +660,7 @@ public class OSB: NSObject {
             requestRemoteCmpVersion()
             return
         }
-
+        
         if (cmpCheckTimestamp + (24 * 60 * 60) < Int(NSDate().timeIntervalSince1970)){
             requestRemoteCmpVersion()
         }
@@ -688,6 +689,129 @@ public class OSB: NSObject {
             print("OSB error: getCmpVersionUrl() - siteId unknown.")
         }
         return ""
+    }
+    
+    fileprivate func decodeAndStoreIABConsent(consentString: String) {
+        print("consentString:")
+        print(consentString)
+        let defaults = UserDefaults.standard
+        if let encodedConsentString = consentString.data(using: .utf8)?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)){
+            do {
+                let webSafeEncodedConsentString = encodedConsentString.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
+                let consent = try ConsentStringV2(consentString: webSafeEncodedConsentString)
+               
+                defaults.set(consent.cmpId, forKey: "IABTCF_CmpSdkID")
+                defaults.set(consent.cmpVersion, forKey: "IABTCF_CmpSdkVersion")
+                defaults.set(consent.tfcPolicyVersion, forKey: "IABTCF_PolicyVersion")
+                defaults.set(1, forKey: "IABTCF_gdprApplies")
+                defaults.set(consent.publisherCC, forKey: "IABTCF_PublisherCC")
+                defaults.set(consent.purposeOneTreatment, forKey: "IABTCF_PurposeOneTreatment")
+                defaults.set(consent.useNonStandardTexts, forKey: "IABTCF_UseNonStandardTexts")
+                defaults.set(consentString, forKey: "IABTCF_TCString")
+                
+                
+                if consentString.split(separator: ".").count > 0 {
+                    
+                    try consent.setPublisherTC(publisherTCString: String(consentString.split(separator: ".")[1]))
+              
+                    var purposeConsents = ""
+                    var purposeLegitimateInterests = ""
+                    var publisherConsents = ""
+                    var publisherLegitimateInterests = ""
+                    var publisherCustomPurposesConsents = ""
+                    var publisherCustomPurposesLegitimateInterests = ""
+                    
+                    print(consent.purposeConsents)
+                    print(consent.pubPurposeConsents)
+                    print(consent.purposeConsents.contains(PurposeIdentifier(1)));
+                    print(consent.purposeConsents.contains(PurposeIdentifier(2)));
+                    print(consent.purposeConsents.contains(PurposeIdentifier(3)));
+                    print(consent.purposeConsents.contains(PurposeIdentifier(4)));
+                    print(consent.purposeConsents.contains(PurposeIdentifier(5)));
+                    print(consent.purposeConsents.contains(PurposeIdentifier(6)));
+                    print(consent.purposeConsents.contains(PurposeIdentifier(7)));
+                    print(consent.purposeConsents.contains(PurposeIdentifier(8)));
+                
+                    
+                    for i in 1..<12 { // TCF 2.2 contains 11 purposes.
+//                        print(consent.purposeConsent(forPurposeId: i)
+//                        
+                        purposeConsents.append(consent.purposeConsents.contains(PurposeIdentifier(i)) ? "1" : "0");
+                        purposeLegitimateInterests.append(consent.purposeLegitimateInterest(forPurposeId: PurposeIdentifier(i)) ? "1" : "0");
+                        publisherConsents.append(consent.pubPurposeConsent(forPubPurposeId: PurposeIdentifier(i)) ? "1" : "0");
+                        publisherLegitimateInterests.append(consent.publisherLegitimateInterest(forPubPurposeId: PurposeIdentifier(i)) ? "1" : "0");
+                        
+                        
+    //                    publisherConsents.append(consent.pu(forPurposeId: PurposeIdentifier(i)) ? "1" : "0");
+                        //                    publisherLegitimateInterests.append(tcString.getPubPurposesLITransparency().contains(i) ? "1" : "0");
+                        //                    publisherCustomPurposesConsents.append(tcString.getCustomPurposesConsent().contains(i) ? "1" : "0");
+                        //                    publisherCustomPurposesLegitimateInterests.append(tcString.getCustomPurposesLITransparency().contains(i) ? "1" : "0");
+                    }
+                    
+                    
+                    
+                }
+                
+   
+                
+                
+            } catch {
+                print(error)
+            }
+        }
+        
+        //                var vendorConsents = "";
+        //                var vendorLegitimateInterests = ""
+        //                Set<Integer> vendorIds = tcString.getVendorConsent().toSet();
+        //                int maxId = 0;
+        //                for (int i: vendorIds) {
+        //                    if (maxId < i) {
+        //                        maxId = i;
+        //                    }
+        //                }
+        //                for (int i = 1; i <= maxId; i++) {
+        //                    vendorConsents.append(tcString.getVendorConsent().contains(i) ? "1" : "0");
+        //                    vendorLegitimateInterests.append(tcString.getVendorLegitimateInterest().contains(i) ? "1" : "0");
+        //                }
+        //
+        //                var specialFeaturesOptIns = ""
+        //                for (int i = 1; i <= 2; i++) {
+        //                    specialFeaturesOptIns.append(tcString.getSpecialFeatureOptIns().contains(i) ? "1" : "0");
+        //                }
+        //
+        //                editor.putString("IABTCF_VendorConsents", vendorConsents.toString());
+        //                editor.putString("IABTCF_VendorLegitimateInterests", vendorLegitimateInterests.toString());
+        //                editor.putString("IABTCF_PurposeConsents", purposeConsents.toString());
+        //                editor.putString("IABTCF_PurposeLegitimateInterests", purposeLegitimateInterests.toString());
+        //                editor.putString("IABTCF_SpecialFeaturesOptIns", specialFeaturesOptIns.toString());
+        //    //            IABTCF_PublisherRestrictions{ID} TODO: implement. ^MB
+        //                editor.putString("IABTCF_PublisherConsent", publisherConsents.toString());
+        //                editor.putString("IABTCF_PublisherLegitimateInterests", publisherLegitimateInterests.toString());
+        //                editor.putString("IABTCF_PublisherCustomPurposesConsents", publisherCustomPurposesConsents.toString());
+        //                editor.putString("IABTCF_PublisherCustomPurposesLegitimateInterests", publisherCustomPurposesLegitimateInterests.toString());
+        //
+        //            } catch (TCStringDecodeException ex) {
+        //                editor.remove("IABTCF_TCString");
+        //                editor.remove("IABTCF_CmpSdkID");
+        //                editor.remove("IABTCF_CmpSdkVersion");
+        //                editor.remove("IABTCF_PolicyVersion");
+        //                editor.remove("IABTCF_PublisherCC");
+        //                editor.remove("IABTCF_PurposeOneTreatment");
+        //                editor.remove("IABTCF_UseNonStandardTexts");
+        //                editor.remove("IABTCF_TCString");
+        //                editor.remove("IABTCF_VendorConsents");
+        //                editor.remove("IABTCF_VendorLegitimateInterests");
+        //                editor.remove("IABTCF_PurposeConsents");
+        //                editor.remove("IABTCF_PurposeLegitimateInterests");
+        //                editor.remove("IABTCF_SpecialFeaturesOptIns");
+        //                editor.remove("IABTCF_PublisherConsent");
+        //                editor.remove("IABTCF_PublisherLegitimateInterests");
+        //                editor.remove("IABTCF_PublisherCustomPurposesConsents");
+        //                editor.remove("IABTCF_PublisherCustomPurposesLegitimateInterests");
+        //            } finally {
+        //                editor.commit();
+        //            }
+        //        }
     }
 }
 
