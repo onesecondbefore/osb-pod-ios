@@ -145,7 +145,7 @@ public class JsonGenerator {
                 }
             }
             break
-        case OSBHitType.action.rawValue:
+        default:
             if let actionData = getSetDataForType(type: OSBSetType.action) {
                 for action in actionData {
                     for (key, value) in action {
@@ -161,8 +161,6 @@ public class JsonGenerator {
             if let itemData = getSetDataForType(type: OSBSetType.item) {
                 hitObj["items"] = itemData
             }
-            break
-        default:
             break
         }
 
