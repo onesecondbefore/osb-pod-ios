@@ -52,46 +52,39 @@ class ViewController: UIViewController {
 
     @IBAction func sendExampleEventsButtonPressed(_ sender: UIButton) {
         do {
-            // OSB - Aggregate event
-            // JS: osb("send", "aggregate", "scrolledepth", "max", 0.8, "scope");
-            //
-            try osb.sendAggregate(scope: "scope", name: "scrolledepth", aggregateType: OSBAggregateType.max, value: 0.8)
-
-            // OSB - Event
-            // JS: osb("send", "event", { "category": "Category", "label": "Label", "action":"Action", "value": 1, "extra1": "a", "extra2": 3.1415});
-            //
-            // try osb.sendEvent(category: "Category", action: "Action", label: "Label", value: "1", data: [["extra1": "a", "extra2": 3.1415]])
-
-            // OSB - IDS
-            // JS: osb("set", "ids", [{ "key": "a3", "value": "12345"}]);
-            // JS: osb("send", "pageview");
-            //
-             osb.setIds(data: [["key": "a3", "value": "12345"], ["key": "a3-1", "value": "12345-1"]])
-            // try osb.send(type: .pageview)
-
-            // OSB - CONSENT + page data
-            // JS: osb.setConsent(["marketing", "social", "functional", "advertising"]);
-            // JS: osb.set("page", {"article": 123})
-            // JS: osb.send("pageview", {"b": 2});
-            //
-//            osb.setConsent(data: ["marketing", "social", "functional", "advertising"])
-            osb.set(type: .page, data: [["article": 123, "oss_category" : "OSS category"]])
-            try osb.send(type: .pageview, data: [["b": 2]])
+            
+//            osb.setIds(data: [["key": "a3", "value": "12345"], ["key": "a3-1", "value": "12345-1"]])
+//            TEST CASE 1
+            osb.set(type: .page, data: [["id": 12334, "title" : "The Great Escape", "url": "https://www.imdb.nl"]])
             try osb.send(type: .pageview)
+            
+//            TEST CASE 2
+            try osb.send(type: .viewable_impression, data: [["page_id": "11111", "campaign_id": 2]])
+            
+//            TEST CASE 3
+            try osb.sendPageView(url: "https://www.theurl.com", title: "Custom page title", referrer: "https://www.thereferrer.com", id:"3456");
+            
+            
+//            TEST CASE 4
+            try osb.sendEvent(category: "unit_test", action: "unit_action", label:"unit_label", value:"8.9")
+            
+            
+//            TEST CASE 5
+            try osb.sendScreenView(screenName:"screenName", className: "screenClass")
+            
+            
+//            TEST CASE 6
+            try osb.sendEvent(category: "test after screenview", action: "some action", label:"some label", value: "8.9")
+            
+//            TEST CASE 7
+            osb.set(type: .item, data: [["id": "sku123", "name": "Apple iPhone 14 Pro", "category": "mobile", "price": 1234.56, "quantity": 1], ["id": "sku234", "name": "Samsung Galaxy S22", "category": "mobile", "price": 1034.56, "quantity": 1]])
+            osb.set(type: .action, data: [["action": "purchase", "id": "abcd1234", "revenue": 2269.12, "tax": 2269.12 * 0.21, "shipping": 100, "affiliation": "partner_funnel"]])
+            
+            try osb.sendPageView(url: "https://www.onesecondbefore.com/thankyout.html", title: "Thank you purchase", referrer: "https://www.onesecondbefore.com/payment.html", id:"3456");
 
-            // OSB - VIEWABLE IMPRESSION
-            //
-            try osb.send(type: .viewable_impression, data: [["a": 1, "b": 2]])
+//            TEST CASE 8
+            try osb.sendAggregate(scope: "scope", name: "scrolldepth", aggregateType: OSBAggregateType.max, value: 0.8)
 
-            // OSB - ACTION
-            // JS: osb('set', 'items', [{id: 'sku123',name: 'Apple iPhone 14 Pro',category: 'mobile',price: 1234.56,quantity: 1}, {id: 'sku234',name: 'Samsung Galaxy S22',category: 'mobile',price: 1034.56,quantity: 1}])
-            // JS: osb('send', 'action', 'purchase', { id: 'abcd1234', revenue: 2269.12, tax: (2269.12 * 0.21), shipping: 100, affiliation: 'partner_funnel')}
-            //
-            // osb.set(type: .item, data: [["id": "sku123", "name": "Apple iPhone 14 Pro", "category": "mobile", "price": 1234.56, "quantity": 1], ["id": "sku234", "name": "Samsung Galaxy S22", "category": "mobile", "price": 1034.56, "quantity": 1]])
-            try osb.send(type: .action, actionType: "purchase", data: [["id": "abcd1234", "revenue": 2269.12, "tax": 2269.12 * 0.21, "shipping": 100, "affiliation": "partner_funnel"]])
-
-            // OSB - Screen view
-            try osb.sendScreenView(screenName: "Homepage", className: "MainController", data: ["a": "1", "b": "2"])
 
         } catch OSBError.notInitialised {
             print("OSB is not initialised")
