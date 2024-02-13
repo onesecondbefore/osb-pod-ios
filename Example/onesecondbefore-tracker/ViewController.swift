@@ -53,36 +53,44 @@ class ViewController: UIViewController {
     @IBAction func sendExampleEventsButtonPressed(_ sender: UIButton) {
         do {
             
-//            osb.setIds(data: [["key": "a3", "value": "12345"], ["key": "a3-1", "value": "12345-1"]])
+            print("TEST CASE 1")
+            osb.setIds(data: [["key": "a3", "value": "12345"], ["key": "a3-1", "value": "12345-1"]])
 //            TEST CASE 1
-            osb.set(type: .page, data: [["id": 12334, "title" : "The Great Escape", "url": "https://www.imdb.nl"]])
+            osb.set(type: .page, data: [["id": 12334, "title" : "Onesecondbefore Homepage", "url": "https://www.onesecondbefore.com"]])
             try osb.send(type: .pageview)
             
 //            TEST CASE 2
+            print("TEST CASE 2")
             try osb.send(type: .viewable_impression, data: [["page_id": "11111", "campaign_id": 2]])
             
 //            TEST CASE 3
-            try osb.sendPageView(url: "https://www.theurl.com", title: "Custom page title", referrer: "https://www.thereferrer.com", id:"3456");
+            print("TEST CASE 3")
+            try osb.sendPageView(url: "https://www.onesecondbefore.com/resources", title: "Onesecondbefore Resources", referrer: "https://www.onesecondbeforre.com", id:"3456");
             
             
 //            TEST CASE 4
+            print("TEST CASE 4")
             try osb.sendEvent(category: "unit_test", action: "unit_action", label:"unit_label", value:"8.9")
             
             
 //            TEST CASE 5
+            print("TEST CASE 5")
             try osb.sendScreenView(screenName:"screenName", className: "screenClass")
             
             
 //            TEST CASE 6
+            print("TEST CASE 6")
             try osb.sendEvent(category: "test after screenview", action: "some action", label:"some label", value: "8.9")
             
 //            TEST CASE 7
+            print("TEST CASE 7")
             osb.set(type: .item, data: [["id": "sku123", "name": "Apple iPhone 14 Pro", "category": "mobile", "price": 1234.56, "quantity": 1], ["id": "sku234", "name": "Samsung Galaxy S22", "category": "mobile", "price": 1034.56, "quantity": 1]])
             osb.set(type: .action, data: [["action": "purchase", "id": "abcd1234", "revenue": 2269.12, "tax": 2269.12 * 0.21, "shipping": 100, "affiliation": "partner_funnel"]])
             
             try osb.sendPageView(url: "https://www.onesecondbefore.com/thankyout.html", title: "Thank you purchase", referrer: "https://www.onesecondbefore.com/payment.html", id:"3456");
 
 //            TEST CASE 8
+            print("TEST CASE 8")
             try osb.sendAggregate(scope: "scope", name: "scrolldepth", aggregateType: OSBAggregateType.max, value: 0.8)
 
 
