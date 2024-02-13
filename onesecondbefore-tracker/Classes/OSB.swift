@@ -13,7 +13,6 @@ import AppTrackingTransparency
 import AdSupport
 import CommonCrypto
 import CryptoKit
-import SwiftyJSON
 
 public enum OSBHitType: String {
     case ids
@@ -643,11 +642,12 @@ public class OSB: NSObject {
     
     fileprivate func processFetchedCmpResponse(cmpResponseData: Data) {
         do {
-            let json = try JSON(data: cmpResponseData)
-            if let cmpVersion = json["cmpVersion"].int {
-                setRemoteCmpVersion(cmpVersion: cmpVersion)
-            } else {
-                print("OSB Error: Could not get cmpVersion from JSON.")
+            if let json = try JSONSerialization.jsonObject(with: cmpResponseData, options: []) as? [String: Any] {
+                if let cmpVersion = json["cmpVersion"] as? Int {
+                    setRemoteCmpVersion(cmpVersion: cmpVersion)
+                } else {
+                    print("OSB Error: Could not get cmpVersion from JSON.")
+                }
             }
         } catch {
             print("OSB Error: Could not parse cmpResponseData.")

@@ -1,23 +1,16 @@
 PODS:
-  - onesecondbefore-tracker (7.1):
-    - SwiftyJSON (~> 4.0)
-  - SwiftyJSON (4.3.0)
+  - onesecondbefore-tracker (7.1)
 
 DEPENDENCIES:
   - onesecondbefore-tracker (from `../`)
-
-SPEC REPOS:
-  trunk:
-    - SwiftyJSON
 
 EXTERNAL SOURCES:
   onesecondbefore-tracker:
     :path: "../"
 
 SPEC CHECKSUMS:
-  onesecondbefore-tracker: 69d0749174ec21716abc3dca4a3ff3ea49436b5d
-  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+  onesecondbefore-tracker: 03cd6cf248f83c66a8ce555fd8bad0f9f257d135
 
-PODFILE CHECKSUM: b9e3b331f8c0d04f4b0096030a5f3aa774551e17
+PODFILE CHECKSUM: 6d89add8366e15faf66c73e063bf91fbb48b2f02
 
 COCOAPODS: 1.15.2

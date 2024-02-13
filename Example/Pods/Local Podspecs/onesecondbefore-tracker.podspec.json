@@ -16,9 +16,6 @@
     "tag": "7.1",
     "branch": "master"
   },
-  "platforms": {
-    "ios": "12.0"
-  },
   "swift_versions": "5.2",
   "source_files": "onesecondbefore-tracker/Classes/**/*",
   "resource_bundles": {
@@ -27,11 +24,8 @@
     ]
   },
   "readme": "README.md",
-  "dependencies": {
-    "SwiftyJSON": [
-      "~> 4.0"
-    ]
+  "platforms": {
+    "ios": "12.0"
   },
-  "public_header_files": "Libs/IAB-TCF-V2-Objective-C/Public/**/*.h",
   "swift_version": "5.2"
 }

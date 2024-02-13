@@ -7,11 +7,9 @@ Pod::Spec.new do |s|
   s.license               = { :type => 'MPL', :file => "LICENSE" }
   s.author                = { 'Onesecondbefore' => 'info@onesecondbefore.com' }
   s.source                = { :git => "https://github.com/onesecondbefore/osb-pod-ios.git", :tag =>  s.version.to_s, :branch => "master" }
-  s.ios.deployment_target = '12.0'
   s.swift_version         = "5.2"
   s.source_files          = 'onesecondbefore-tracker/Classes/**/*'
   s.resource_bundles      = { 'onesecondbefore-tracker' => ['onesecondbefore-tracker/Assets/*'] }
   s.readme                = "README.md"
-  s.dependency 'SwiftyJSON', '~> 4.0'
-  s.public_header_files = 'Libs/IAB-TCF-V2-Objective-C/Public/**/*.h'
+  s.ios.deployment_target = '12.0'
 end
