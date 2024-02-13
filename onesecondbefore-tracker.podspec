@@ -13,4 +13,5 @@ Pod::Spec.new do |s|
   s.resource_bundles      = { 'onesecondbefore-tracker' => ['onesecondbefore-tracker/Assets/*'] }
   s.readme                = "README.md"
   s.dependency 'SwiftyJSON', '~> 4.0'
+  s.public_header_files = 'Libs/IAB-TCF-V2-Objective-C/Public/**/*.h'
 end

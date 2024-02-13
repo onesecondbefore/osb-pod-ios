@@ -32,5 +32,6 @@
       "~> 4.0"
     ]
   },
+  "public_header_files": "Libs/IAB-TCF-V2-Objective-C/Public/**/*.h",
   "swift_version": "5.2"
 }
