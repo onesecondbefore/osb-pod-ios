@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -106,9 +106,26 @@
                                     <action selector="sendExampleEventsButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="xjJ-kV-G08"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yfn-69-BI7">
+                                <rect key="frame" x="62.5" y="451.5" width="250" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="VuV-5S-58w"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Print Google ConsentMode">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="requestGoogleConsentModeButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="XvH-qy-JR2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Yfn-69-BI7" firstAttribute="top" secondItem="Rxr-oz-cK0" secondAttribute="bottom" constant="15" id="4K9-zI-JII"/>
                             <constraint firstItem="lhZ-vc-S4x" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="6KK-Ej-lsr"/>
                             <constraint firstItem="nQZ-VQ-crK" firstAttribute="top" secondItem="lhZ-vc-S4x" secondAttribute="bottom" constant="50" id="86P-Cs-mlQ"/>
                             <constraint firstItem="Kr2-WE-81k" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="8kT-hT-DWN"/>
@@ -117,6 +134,7 @@
                             <constraint firstItem="Rxr-oz-cK0" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Ezs-uH-UVd"/>
                             <constraint firstItem="YTu-j9-dNd" firstAttribute="top" secondItem="Kr2-WE-81k" secondAttribute="bottom" constant="10" id="HXH-eL-vwW"/>
                             <constraint firstItem="YTu-j9-dNd" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="I4H-bX-S0v"/>
+                            <constraint firstItem="Yfn-69-BI7" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="MYw-bI-365"/>
                             <constraint firstItem="nQZ-VQ-crK" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Ogt-wj-juP"/>
                             <constraint firstItem="aYg-NG-Gce" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="XOY-ii-Uj0"/>
                             <constraint firstItem="Kr2-WE-81k" firstAttribute="top" secondItem="aYg-NG-Gce" secondAttribute="bottom" constant="50" id="eBu-Wb-gTk"/>

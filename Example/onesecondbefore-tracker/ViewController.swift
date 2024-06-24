@@ -14,6 +14,7 @@ import UIKit
 // Needed for requesting Tracking permission
 import AdSupport
 import AppTrackingTransparency
+import FirebaseAnalytics
 
 
 class ViewController: UIViewController {
@@ -25,13 +26,25 @@ class ViewController: UIViewController {
         intializeOSB()
     }
     
+    func consentCallback(consent: [String: String]) -> Void {
+        Analytics.setConsent(Dictionary(uniqueKeysWithValues: consent.map { t, s in (ConsentType(rawValue: t), ConsentStatus(rawValue: s)) }))
+    }
+    
     func intializeOSB() {
+        print("intializeOSB()")
         // OSB configuration
         let accountId = "demo"
         let serverUrl = "https://c.onesecondbefore.com/"
         
-        osb.config(accountId: accountId, url: serverUrl, siteId: "demo.app")
+        
+        osb.config(accountId: accountId, url: serverUrl, siteId: "demo.app", consentCallback: consentCallback)
         osb.debug(true) // Enabling debug will print the JSON that is sent to the OSB server.
+    }
+    
+    @IBAction func requestGoogleConsentModeButtonPressed(_ sender: UIButton) {
+        if let consent = osb.getGoogleConsentModePayload() {
+           print(Dictionary(uniqueKeysWithValues: consent.map { t, s in (ConsentType(rawValue: t), ConsentStatus(rawValue: s)) }))
+        }
     }
     
     @IBAction func requestTrackingButtonPressed(_ sender: UIButton) {

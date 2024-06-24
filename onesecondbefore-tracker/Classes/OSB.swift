@@ -60,6 +60,7 @@ public class OSB: NSObject {
     fileprivate var viewId: String = ""
     fileprivate var ids: [[String: Any]] = [[String: Any]]()
     fileprivate var setDataObject = [String: Any]()
+    fileprivate var consentCallback: (([String:String]) -> Void)?
     
     // MARK: - Static variables
     static let UDConsentKey = "osb-defaults-consent"
@@ -68,6 +69,7 @@ public class OSB: NSObject {
     static let UDLocalCMPVersionKey = "osb-defaults-local-cmp-version"
     static let UDRemoteCMPVersionKey = "osb-defaults-remote-cmp-version"
     static let UDCmpCheckTimestampKey = "osb-defaults-cmp-check-timestamp"
+    static let UDGoogleConsentModeKey = "osb-defaults-google-consent-mode"
     
     private override init() {
         super.init()
@@ -104,7 +106,6 @@ public class OSB: NSObject {
         }
     }
     
-    
     private lazy var osbConsentWebview: WKWebView = {
         let osbConsentWebview = WKWebView()
         osbConsentWebview.translatesAutoresizingMaskIntoConstraints = false
@@ -119,11 +120,9 @@ public class OSB: NSObject {
         initialised = false
     }
     
-    public func config(accountId: String, url: String) {
-        config(accountId: accountId, url: url, siteId: "")
-    }
-    
-    public func config(accountId: String, url: String, siteId: String) {
+    public func config(accountId: String, url: String, siteId: String, consentCallback: (([String:String]) -> Void)?) {
+        
+        self.consentCallback = consentCallback
         clear()
         
         info.accountId = accountId
@@ -404,6 +403,11 @@ public class OSB: NSObject {
         return false
     }
     
+    public func getGoogleConsentModePayload() -> [String:String]? {
+        let defaults = UserDefaults.standard
+        return defaults.object(forKey: OSB.UDGoogleConsentModeKey) as? [String:String]
+    }
+    
     // MARK: - Deprecated functions
     
     @available(*, deprecated, renamed: "OSBHitType")
@@ -427,7 +431,7 @@ public class OSB: NSObject {
     
     @available(*, deprecated, renamed: "config")
     public func create(accountId: String, url: String, siteId: String) {
-        config(accountId: accountId, url: url, siteId: siteId)
+        config(accountId: accountId, url: url, siteId: siteId, consentCallback: nil)
     }
     
     @available(*, deprecated, renamed: "remove")
@@ -550,13 +554,40 @@ public class OSB: NSObject {
     fileprivate func processConsentCallback(consentCallbackString: String) {
         hideConsentWebview()
         if let json = convertConsentCallbackToJSON(consentCallbackString: consentCallbackString) {
-            if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String {
+            if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String, let purposes = jsonConsent["purposes"] as? [Int] {
+                
+                
+                let consentMode = mapConsentMode(purposes: purposes)
+                setGoogleConsentMode(consent: consentMode)
+                if let cc = self.consentCallback {
+                    cc(consentMode)
+                }
+                
                 decodeAndStoreIABConsent(consentString: consentString)
                 setConsent(data: consentString)
                 setConsentExpiration(timestamp: expirationDate)
                 setCDUID(cduid: cduid)
             }
         }
+    }
+    
+    fileprivate func mapConsentMode(purposes: [Int]) -> [String: String]{
+ 
+        var consent = ["ad_storage": "denied", "ad_user_data": "denied", "ad_personalization": "denied", "analytics_storage": "granted", "functionality_storage": "granted", "personalization_storage": "granted", "security_storage": "granted"]
+        
+        if purposes.contains(1) {
+            consent["ad_storage"] = "granted"
+        }
+        
+        if purposes.contains(1) && purposes.contains(7) {
+            consent["ad_user_data"] = "granted"
+        }
+        
+        if purposes.contains(3) && purposes.contains(4) {
+            consent["ad_personalization"] = "granted"
+        }
+        
+        return consent
     }
     
     fileprivate func convertConsentCallbackToJSON(consentCallbackString: String) -> Dictionary<String, Any>? {
@@ -695,6 +726,11 @@ public class OSB: NSObject {
         SPTIabTCFApi().consentString = consentString
     }
     
+    fileprivate func setGoogleConsentMode(consent: [String:String]) {
+        let defaults = UserDefaults.standard
+        defaults.set(consent, forKey: OSB.UDGoogleConsentModeKey)
+    }
+    
     fileprivate func printAllUD() {
         for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
             print("\(key) = \(value) \n")
@@ -732,3 +768,4 @@ extension Data {
     }
     
 }
+
