@@ -245,7 +245,7 @@
 		BB36FDBE590FBCFBB3D7369E1542EE76 /* onesecondbefore-tracker-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 58355E96631C7A40C4D71D3B20FB753E /* onesecondbefore-tracker-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BB860D128BA9A33369B0BE953FD09FAD /* FBLPromise+Always.m in Sources */ = {isa = PBXBuildFile; fileRef = A480013C13D5C6B26072F456118F8053 /* FBLPromise+Always.m */; };
 		BBF74A1D27A2CFDCF3A0261B510EB3CB /* Pods-onesecondbefore-tracker_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A1976A81EF39772393D6F1EE97AF0A /* Pods-onesecondbefore-tracker_Example-dummy.m */; };
-		BDE61C82382119180D04BAE18E86B912 /* onesecondbefore-tracker-onesecondbefore-tracker in Resources */ = {isa = PBXBuildFile; fileRef = 2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker-onesecondbefore-tracker */; };
+		BDE61C82382119180D04BAE18E86B912 /* onesecondbefore-tracker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker.bundle */; };
 		BEA42C5D2AE6998AF93BE42299983517 /* FBLPromise+Then.h in Headers */ = {isa = PBXBuildFile; fileRef = CF73D22979C0DAA5D5359B8468FA06F7 /* FBLPromise+Then.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEB7CAFDF49736C5B4E370A34746BA54 /* SPTIabTCFApi.m in Sources */ = {isa = PBXBuildFile; fileRef = FED34E00291A3480CDD3D9304DFF54B4 /* SPTIabTCFApi.m */; };
 		C15A3218A9B55FD69D843D73F9CE91B8 /* HeartbeatStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3853D0BF07ED0B8A4A62A75C1726A9 /* HeartbeatStorage.swift */; };
@@ -579,7 +579,7 @@
 		2E1715FADD409A0DE48799E250854BD3 /* FIRDependency.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRDependency.h; path = FirebaseCore/Extension/FIRDependency.h; sourceTree = "<group>"; };
 		2E310AEFB57DD7C849792EA7B4F6B34E /* GoogleUtilities.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = GoogleUtilities.modulemap; sourceTree = "<group>"; };
 		2F086FEE1B23F9321072DFA79FCB9EEC /* FirebaseCore-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "FirebaseCore-Info.plist"; sourceTree = "<group>"; };
-		2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker-onesecondbefore-tracker */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "onesecondbefore-tracker-onesecondbefore-tracker"; path = "onesecondbefore-tracker.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "onesecondbefore-tracker.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		306A74C6FB7FA76F3D05B68CF77F42FF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = GoogleUtilities/Privacy/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3094E3B95293CE4B4ADDFA3DC0E00C5C /* FIRLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRLogger.m; path = FirebaseCore/Sources/FIRLogger.m; sourceTree = "<group>"; };
 		311B6ECF325DDF31A104D5F00C9092BF /* ResourceBundle-onesecondbefore-tracker-onesecondbefore-tracker-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-onesecondbefore-tracker-onesecondbefore-tracker-Info.plist"; sourceTree = "<group>"; };
@@ -1655,7 +1655,7 @@
 				06FC5C9CF96D60C50FCD47D339C91951 /* nanopb */,
 				3227F3FC45681D7CEE5D1355A532398A /* nanopb-nanopb_Privacy */,
 				2D538260DC8C85E2E5B2EBCD1D91E261 /* onesecondbefore_tracker.framework */,
-				2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker-onesecondbefore-tracker */,
+				2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker.bundle */,
 				A8846BAFDAC8207000EA39B120D11357 /* Pods-onesecondbefore-tracker_Example */,
 				3347A1AB6546F0A3977529B8F199DC41 /* PromisesObjC */,
 				3F238BB22C5201CE689CAF2F766AED95 /* PromisesObjC-FBLPromises_Privacy */,
@@ -2227,7 +2227,7 @@
 			);
 			name = "onesecondbefore-tracker-onesecondbefore-tracker";
 			productName = "onesecondbefore-tracker";
-			productReference = 2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker-onesecondbefore-tracker */;
+			productReference = 2F0F5B3734759D937E9A3122609F6F33 /* onesecondbefore-tracker.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -2301,7 +2301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDE61C82382119180D04BAE18E86B912 /* onesecondbefore-tracker-onesecondbefore-tracker in Resources */,
+				BDE61C82382119180D04BAE18E86B912 /* onesecondbefore-tracker.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3173,6 +3173,7 @@
 				IBSC_MODULE = onesecondbefore_tracker;
 				INFOPLIST_FILE = "Target Support Files/onesecondbefore-tracker/ResourceBundle-onesecondbefore-tracker-onesecondbefore-tracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 7.2;
 				PRODUCT_NAME = "onesecondbefore-tracker";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -3667,6 +3668,7 @@
 				IBSC_MODULE = onesecondbefore_tracker;
 				INFOPLIST_FILE = "Target Support Files/onesecondbefore-tracker/ResourceBundle-onesecondbefore-tracker-onesecondbefore-tracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 7.2;
 				PRODUCT_NAME = "onesecondbefore-tracker";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

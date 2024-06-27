@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         intializeOSB()
     }
     
-    func consentCallback(consent: [String: String]) -> Void {
+    func googleConsentCallback(consent: [String: String]) -> Void {
         Analytics.setConsent(Dictionary(uniqueKeysWithValues: consent.map { t, s in (ConsentType(rawValue: t), ConsentStatus(rawValue: s)) }))
     }
     
@@ -37,8 +37,15 @@ class ViewController: UIViewController {
         let serverUrl = "https://c.onesecondbefore.com/"
         
         
-        osb.config(accountId: accountId, url: serverUrl, siteId: "demo.app", consentCallback: consentCallback)
+        osb.config(accountId: accountId, url: serverUrl, siteId: "demo.app", consentCallback: googleConsentCallback)
         osb.debug(true) // Enabling debug will print the JSON that is sent to the OSB server.
+    }
+    
+    func getGoogleConsentModePayload() {
+        if let googleConsent = osb.getGoogleConsentModePayload() {
+            let consent = Dictionary(uniqueKeysWithValues: googleConsent.map { t, s in (ConsentType(rawValue: t), ConsentStatus(rawValue: s)) })
+            print(consent)
+        }
     }
     
     @IBAction func requestGoogleConsentModeButtonPressed(_ sender: UIButton) {

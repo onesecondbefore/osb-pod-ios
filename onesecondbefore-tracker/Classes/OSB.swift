@@ -571,7 +571,7 @@ public class OSB: NSObject {
         }
     }
     
-    fileprivate func mapConsentMode(purposes: [Int]) -> [String: String]{
+    fileprivate func mapConsentMode(purposes: [Int]) -> [String: String] {
  
         var consent = ["ad_storage": "denied", "ad_user_data": "denied", "ad_personalization": "denied", "analytics_storage": "granted", "functionality_storage": "granted", "personalization_storage": "granted", "security_storage": "granted"]
         
