@@ -54,6 +54,7 @@ public class OSB: NSObject {
     fileprivate var locationManager = LocationManager()
     fileprivate var apiQueue: ApiQueue = ApiQueue()
     fileprivate var initialised: Bool = false
+    fileprivate var hasLocationConsent: Bool = false;
     fileprivate var eventKey: String = ""
     fileprivate var eventData: [String: Any] = [String: Any]()
     fileprivate var hitsData: [String: Any] = [String: Any]()
@@ -322,15 +323,15 @@ public class OSB: NSObject {
         
         // Get location info
         let locationCoordinates = locationManager.getLocationCoordinates()
-        let locationEnabled = locationManager.isLocationEnabled()
+        let locationEnabled = hasLocationConsent && locationManager.isLocationEnabled()
         
         // Generate the JSON data
         let generator = JsonGenerator(type.rawValue,
                                       data: data,
                                       info: info,
                                       subType: actionType,
-                                      latitude: locationCoordinates.0,
-                                      longitude: locationCoordinates.1,
+                                      latitude: locationEnabled ? locationCoordinates.0 : 0,
+                                      longitude: locationEnabled ? locationCoordinates.1 : 0,
                                       isLocEnabled: locationEnabled,
                                       eventKey: eventKey,
                                       eventData: eventData,
@@ -554,8 +555,7 @@ public class OSB: NSObject {
     fileprivate func processConsentCallback(consentCallbackString: String) {
         hideConsentWebview()
         if let json = convertConsentCallbackToJSON(consentCallbackString: consentCallbackString) {
-            if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String, let purposes = jsonConsent["purposes"] as? [Int] {
-                
+            if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String, let purposes = jsonConsent["purposes"] as? [Int], let specialFeatures = jsonConsent["specialFeatures"] as? [Int] {
                 
                 let consentMode = mapConsentMode(purposes: purposes)
                 setGoogleConsentMode(consent: consentMode)
@@ -567,6 +567,7 @@ public class OSB: NSObject {
                 setConsent(data: consentString)
                 setConsentExpiration(timestamp: expirationDate)
                 setCDUID(cduid: cduid)
+                processSpecialFeatures(specialFeatures: specialFeatures)
             }
         }
     }
@@ -724,6 +725,10 @@ public class OSB: NSObject {
     
     fileprivate func decodeAndStoreIABConsent(consentString: String) {
         SPTIabTCFApi().consentString = consentString
+    }
+    
+    fileprivate func processSpecialFeatures(specialFeatures: [Int]) {
+        hasLocationConsent = specialFeatures.contains(1)
     }
     
     fileprivate func setGoogleConsentMode(consent: [String:String]) {

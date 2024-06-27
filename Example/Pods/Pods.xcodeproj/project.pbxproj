@@ -3173,7 +3173,7 @@
 				IBSC_MODULE = onesecondbefore_tracker;
 				INFOPLIST_FILE = "Target Support Files/onesecondbefore-tracker/ResourceBundle-onesecondbefore-tracker-onesecondbefore-tracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_NAME = "onesecondbefore-tracker";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -3668,7 +3668,7 @@
 				IBSC_MODULE = onesecondbefore_tracker;
 				INFOPLIST_FILE = "Target Support Files/onesecondbefore-tracker/ResourceBundle-onesecondbefore-tracker-onesecondbefore-tracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 7.2;
+				MARKETING_VERSION = 7.3;
 				PRODUCT_NAME = "onesecondbefore-tracker";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
