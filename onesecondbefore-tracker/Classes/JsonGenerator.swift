@@ -40,7 +40,7 @@ public class JsonGenerator {
         self.subType = subType
         self.latitude = latitude
         self.longitude = longitude
-        isLocationEnabled = isLocEnabled
+        self.isLocationEnabled = isLocEnabled
         self.eventKey = eventKey
         self.eventData = eventData
         self.hitsData = hitsData
@@ -225,7 +225,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "7.3." + getGitHash(),
+            "tv": "7.4." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,
@@ -243,7 +243,7 @@ public class JsonGenerator {
         let countryId = NSLocale.current.regionCode ?? "NL"
         let lang = "\(langId)-\(countryId)"
 
-        let deviceInfoData: [String: Any] = [
+        var deviceInfoData: [String: Any] = [
             "idfa": idfa ?? NSNull(),
             "idfv": idfv ?? NSNull(),
             "cduid": cduid ?? NSNull(),
@@ -256,13 +256,8 @@ public class JsonGenerator {
         ]
 
         if hasValidGeoLocation() {
-            let locationData = [
-                "geo": [
-                    "latitude": latitude,
-                    "longitude": longitude,
-                ],
-            ]
-            return deviceInfoData.merging(locationData) { current, _ in current }
+            deviceInfoData["latitude"] = latitude
+            deviceInfoData["longitude"] = longitude
         }
 
         return deviceInfoData

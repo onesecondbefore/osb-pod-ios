@@ -33,11 +33,11 @@ class ViewController: UIViewController {
     func intializeOSB() {
         print("intializeOSB()")
         // OSB configuration
-        let accountId = "demo"
-        let serverUrl = "https://c.onesecondbefore.com/"
+        let accountId = "demo" // INSERT YOUR ACCOUNT ID HERE
+        let serverUrl = "https://tracker.yourcompany.com/" // INSERT YOUR SERVER URL HERE
+        let siteId = "demo.app"  // INSERT YOUR SITE ID HERE
         
-        
-        osb.config(accountId: accountId, url: serverUrl, siteId: "demo.app", consentCallback: googleConsentCallback)
+        osb.config(accountId: accountId, url: serverUrl, siteId: siteId, consentCallback: googleConsentCallback)
         osb.debug(true) // Enabling debug will print the JSON that is sent to the OSB server.
     }
     
