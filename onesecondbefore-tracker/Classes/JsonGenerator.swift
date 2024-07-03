@@ -225,7 +225,7 @@ public class JsonGenerator {
 
         let systemInfoData: [String: Any] = [
             "st": dateToTimeStamp(Date()),
-            "tv": "7.4." + getGitHash(),
+            "tv": "7.4.2." + getGitHash(),
             "cs": 0,
             "is": hasValidGeoLocation() ? 0 : 1,
             "aid": accountId,

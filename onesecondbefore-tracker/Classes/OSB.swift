@@ -121,6 +121,10 @@ public class OSB: NSObject {
         initialised = false
     }
     
+    public func config(accountId: String, url: String, siteId: String) {
+        config(accountId: accountId, url: url, siteId: siteId, consentCallback: nil)
+    }
+    
     public func config(accountId: String, url: String, siteId: String, consentCallback: (([String:String]) -> Void)?) {
         
         self.consentCallback = consentCallback
