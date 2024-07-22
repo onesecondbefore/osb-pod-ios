@@ -164,9 +164,18 @@ public class OSB: NSObject {
     
     public func setIds(data: [[String: Any]]) {
         ids = data
+        
     }
     
-    public func setConsent(data: String) {
+    public func setConsent(data: String, useConsentCallback: Bool = true) {
+        decodeAndStoreIABConsent(consentString: data)
+        if useConsentCallback {
+            let consentMode = mapConsentMode(purposes: convertIABToPurposes(consentString: data))
+            setGoogleConsentMode(consent: consentMode)
+            if let cc = self.consentCallback {
+                cc(consentMode)
+            }
+        }
         setConsent(data: [data])
     }
     
@@ -413,6 +422,12 @@ public class OSB: NSObject {
         return defaults.object(forKey: OSB.UDGoogleConsentModeKey) as? [String:String]
     }
     
+    public func log(message: String) {
+        if info.debugMode {
+            print("OSB: \(message)")
+        }
+    }
+    
     // MARK: - Deprecated functions
     
     @available(*, deprecated, renamed: "OSBHitType")
@@ -567,13 +582,26 @@ public class OSB: NSObject {
                     cc(consentMode)
                 }
                 
-                decodeAndStoreIABConsent(consentString: consentString)
-                setConsent(data: consentString)
+               
+                setConsent(data: consentString, useConsentCallback: false)
                 setConsentExpiration(timestamp: expirationDate)
                 setCDUID(cduid: cduid)
                 processSpecialFeatures(specialFeatures: specialFeatures)
             }
         }
+    }
+    
+    fileprivate func convertIABToPurposes(consentString: String) -> [Int] {
+        var purposesArray = [Int]()
+        if let model = SPTIabTCFApi.decode(TCString: consentString) {
+            for i in 1...20 {
+                if model.isPurposeConsentGivenFor(purposeId: Int32(i)) {
+                    purposesArray.append(i)
+                }
+            }
+        }
+           
+        return purposesArray
     }
     
     fileprivate func mapConsentMode(purposes: [Int]) -> [String: String] {
