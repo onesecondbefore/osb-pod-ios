@@ -417,6 +417,14 @@ public class OSB: NSObject {
         return false
     }
     
+    public func isIABConsentValid(tcString: String) -> Bool {
+        if let model = SPTIabTCFApi.decode(TCString: tcString), let remoteCMPVersion = getRemoteCmpVersion() {
+            return remoteCMPVersion <= model.cmpVersion
+        }
+        
+        return false;
+     }
+    
     public func getGoogleConsentModePayload() -> [String:String]? {
         let defaults = UserDefaults.standard
         return defaults.object(forKey: OSB.UDGoogleConsentModeKey) as? [String:String]
