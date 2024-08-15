@@ -418,11 +418,15 @@ public class OSB: NSObject {
     }
     
     public func isIABConsentValid(tcString: String) -> Bool {
-        if let model = SPTIabTCFApi.decode(TCString: tcString), let remoteCMPVersion = getRemoteCmpVersion() {
+        guard let model = SPTIabTCFApi.decode(TCString: tcString) else {
+            return false
+        }
+        
+        if let remoteCMPVersion = getRemoteCmpVersion() {
             return remoteCMPVersion <= model.cmpVersion
         }
         
-        return false;
+        return true
      }
     
     public func getGoogleConsentModePayload() -> [String:String]? {
