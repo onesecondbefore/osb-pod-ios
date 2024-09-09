@@ -58,8 +58,8 @@
     SPTIabTCFModel *model = [SPTIabTCStringParser parseConsentString:consentString];
     self.tcModel = model;
 
-    NSString *parsedVendorConsents = model.parsedVendorsConsents;
-    NSString *parsedPurposeConsents = model.parsedPurposesConsents;
+    NSString *parsedVendorConsents = model.parsedVendorConsents;
+    NSString *parsedPurposeConsents = model.parsedPurposeConsents;
 
     if (model.version == 1) {
         self.v1DataStorage.consentString = consentString;
@@ -68,21 +68,17 @@
     }
     else if (model.version == 2) {
         self.v2DataStorage.tcString = consentString;
-
         self.v2DataStorage.cmpSdkId = model.cmpId;
         self.v2DataStorage.cmpSdkVersion = model.cmpVersion;
-
         self.v2DataStorage.policyVersion = model.policyVersion;
-
         self.v2DataStorage.publisherCountryCode = model.publisherCountryCode;
         self.v2DataStorage.purposeOneTreatment = model.purposeOneTreatment;
         self.v2DataStorage.useNonStandardStack = model.useNonStandardStack;
         self.v2DataStorage.isServiceSpecific = model.isServiceSpecific;
-
-        self.v2DataStorage.parsedVendorsConsents = model.parsedVendorsConsents;
-        self.v2DataStorage.parsedVendorsLegitmateInterest = model.parsedVendorsLegitmateInterest;
-        self.v2DataStorage.parsedPurposesConsents = model.parsedPurposesConsents;
-        self.v2DataStorage.parsedPurposesLegitmateInterest = model.parsedPurposesLegitmateInterest;
+        self.v2DataStorage.parsedVendorConsents = model.parsedVendorConsents;
+        self.v2DataStorage.parsedVendorLegitmateInterest = model.parsedVendorLegitmateInterest;
+        self.v2DataStorage.parsedPurposeConsents = model.parsedPurposeConsents;
+        self.v2DataStorage.parsedPurposeLegitmateInterest = model.parsedPurposeLegitmateInterest;
         self.v2DataStorage.specialFeatureOptIns = model.specialFeatureOptIns;
         self.v2DataStorage.publisherTCParsedPurposesConsents = model.publisherTCParsedPurposesConsents;
         self.v2DataStorage.publisherTCParsedPurposesLegitmateInterest = model.publisherTCParsedPurposesLegitmateInterest;
@@ -110,7 +106,7 @@
 
 -(NSString *)parsedVendorConsents {
     NSString *v1String = self.v1DataStorage.parsedVendorConsents;
-    NSString *v2String = self.v2DataStorage.parsedVendorsConsents;
+    NSString *v2String = self.v2DataStorage.parsedVendorConsents;
     if (v1String && ![self isValidString:v2String] && !self.ignoreV1) {
         return v1String;
     }
@@ -119,18 +115,18 @@
     }
 }
 
-//- (void)setParsedVendorConsents:(NSString *)parsedVendorConsents forV1:(BOOL)forV1 {
-//    if (forV1) {
-//        self.v1DataStorage.parsedVendorConsents = parsedVendorConsents;
-//    }
-//    else {
-//        self.v2DataStorage.parsedVendorsConsents = parsedVendorConsents;
-//    }
-//}
+- (void)setParsedVendorConsents:(NSString *)parsedVendorConsents forV1:(BOOL)forV1 {
+    if (forV1) {
+        self.v1DataStorage.parsedVendorConsents = parsedVendorConsents;
+    }
+    else {
+        self.v2DataStorage.parsedVendorConsents = parsedVendorConsents;
+    }
+}
 
 -(NSString *)parsedPurposeConsents {
     NSString *v1String = self.v1DataStorage.parsedPurposeConsents;
-    NSString *v2String = self.v2DataStorage.parsedPurposesConsents;
+    NSString *v2String = self.v2DataStorage.parsedPurposeConsents;
     if (v1String && ![self isValidString:v2String] && !self.ignoreV1) {
         return v1String;
     }
@@ -139,14 +135,14 @@
     }
 }
 
-//- (void)setParsedPurposeConsents:(NSString *)parsedPurposeConsents forV1:(BOOL)forV1 {
-//    if (forV1) {
-//        self.v1DataStorage.parsedPurposeConsents = parsedPurposeConsents;
-//    }
-//    else {
-//        self.v2DataStorage.parsedPurposesConsents = parsedPurposeConsents;
-//    }
-//}
+- (void)setParsedPurposeConsents:(NSString *)parsedPurposeConsents forV1:(BOOL)forV1 {
+    if (forV1) {
+        self.v1DataStorage.parsedPurposeConsents = parsedPurposeConsents;
+    }
+    else {
+        self.v2DataStorage.parsedPurposeConsents = parsedPurposeConsents;
+    }
+}
 
 - (BOOL)isVendorConsentGivenFor:(int)vendorId {
     return [self isVendorConsentGivenFor:vendorId inConsentString:self.consentString];

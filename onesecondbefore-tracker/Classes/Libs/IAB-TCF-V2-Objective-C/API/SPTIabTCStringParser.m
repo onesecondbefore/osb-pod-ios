@@ -109,16 +109,16 @@ typedef NS_ENUM(NSInteger, SPTTcfDecoderVendorStringType) {
     model.vendorListVersion = [SPTIabTCFUtils BinaryToDecimal:binaryCharBuffer fromIndex:VENDOR_LIST_VERSION_BIT_OFFSET length:VENDOR_LIST_VERSION_BIT_LENGTH];
     
     if (version == 1) {
-        model.parsedPurposesConsents = [[self class] decodeBitChainStringFromBinary:binaryCharBuffer fromIndex:PURPOSES_ALLOWED_V1_BIT_OFFSET length:PURPOSES_ALLOWED_V1_BIT_LENGTH];
-        model.parsedVendorsConsents = [[self class] decodeVendorBitChainStringFromBinary:binaryCharBuffer fromIndex:MAX_VENDOR_ID_V1_BIT_OFFSET version1:YES].value;
+        model.parsedPurposeConsents = [[self class] decodeBitChainStringFromBinary:binaryCharBuffer fromIndex:PURPOSES_ALLOWED_V1_BIT_OFFSET length:PURPOSES_ALLOWED_V1_BIT_LENGTH];
+        model.parsedVendorConsents = [[self class] decodeVendorBitChainStringFromBinary:binaryCharBuffer fromIndex:MAX_VENDOR_ID_V1_BIT_OFFSET version1:YES].value;
     }
     else if (version == 2) {
         model.policyVersion = [SPTIabTCFUtils BinaryToDecimal:binaryCharBuffer fromIndex:POLICY_VERSION_BIT_OFFSET length:POLICY_VERSION_BIT_LENGTH];
         model.isServiceSpecific = [SPTIabTCFUtils BinaryToBoolean:binaryCharBuffer atIndex:IS_SERVICE_SPECIFIC_BIT];
         model.useNonStandardStack = [SPTIabTCFUtils BinaryToBoolean:binaryCharBuffer atIndex:USE_NON_STANDART_STACK_BIT];
         model.specialFeatureOptIns = [[self class] decodeBitChainStringFromBinary:binaryCharBuffer fromIndex:SPECIAL_FEATURE_OPTINS_BIT_OFFSET length:SPECIAL_FEATURE_OPTINS_BIT_LENGHT];
-        model.parsedPurposesConsents = [[self class] decodeBitChainStringFromBinary:binaryCharBuffer fromIndex:PURPOSES_CONSENT_V2_BIT_OFFSET length:PURPOSES_CONSENT_V2_BIT_LENGTH];
-        model.parsedPurposesLegitmateInterest = [[self class] decodeBitChainStringFromBinary:binaryCharBuffer fromIndex:PURPOSES_LEGIT_INTEREST_BIT_OFFSET length:PURPOSES_LEGIT_INTEREST_BIT_LENGTH];
+        model.parsedPurposeConsents = [[self class] decodeBitChainStringFromBinary:binaryCharBuffer fromIndex:PURPOSES_CONSENT_V2_BIT_OFFSET length:PURPOSES_CONSENT_V2_BIT_LENGTH];
+        model.parsedPurposeLegitmateInterest = [[self class] decodeBitChainStringFromBinary:binaryCharBuffer fromIndex:PURPOSES_LEGIT_INTEREST_BIT_OFFSET length:PURPOSES_LEGIT_INTEREST_BIT_LENGTH];
         model.purposeOneTreatment = [SPTIabTCFUtils BinaryToBoolean:binaryCharBuffer atIndex:PURPOSE_ONE_TREATMENT_BIT];
         model.publisherCountryCode = [[self class] decode6BitCharStringFromBinary:binaryCharBuffer fromIndex:PUBLISHER_COUNTRY_CODE_BIT_OFFSET length:PUBLISHER_COUNTRY_CODE_BIT_LENGTH];
         
@@ -128,11 +128,11 @@ typedef NS_ENUM(NSInteger, SPTTcfDecoderVendorStringType) {
         int variableOffset = MAX_VENDOR_ID_V2_BIT_OFFSET;
         
         consentAndOffset = [[self class] decodeVendorBitChainStringFromBinary:binaryCharBuffer fromIndex:variableOffset version1:NO];
-        model.parsedVendorsConsents = consentAndOffset.value;
+        model.parsedVendorConsents = consentAndOffset.value;
         variableOffset = MAX_VENDOR_ID_V2_BIT_OFFSET + consentAndOffset.offset;
         
         consentAndOffset = [[self class] decodeVendorBitChainStringFromBinary:binaryCharBuffer fromIndex:variableOffset version1:NO];
-        model.parsedVendorsLegitmateInterest = consentAndOffset.value;
+        model.parsedVendorLegitmateInterest = consentAndOffset.value;
         variableOffset += consentAndOffset.offset;
         
         SPTDecodedPublisherRestrictionAndOffset *pubRestAndOffset;

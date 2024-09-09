@@ -22,12 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) NSInteger consentScreen;
 @property (retain, nonatomic) NSString * consentCountryCode;
 @property (assign, nonatomic) NSInteger vendorListVersion;
-@property (retain, nonatomic) NSString * parsedPurposesConsents;
-@property (retain, nonatomic) NSString * parsedVendorsConsents;
+@property (retain, nonatomic) NSString * parsedPurposeConsents;
+@property (retain, nonatomic) NSString * parsedVendorConsents;
 
 //v2
-@property (retain, nonatomic) NSString * parsedPurposesLegitmateInterest;
-@property (retain, nonatomic) NSString * parsedVendorsLegitmateInterest;
+@property (retain, nonatomic) NSString * parsedPurposeLegitmateInterest;
+@property (retain, nonatomic) NSString * parsedVendorLegitmateInterest;
 @property (assign, nonatomic) NSInteger policyVersion;
 @property (assign, nonatomic) BOOL isServiceSpecific;
 @property (assign, nonatomic) BOOL useNonStandardStack;

@@ -52,7 +52,8 @@
         if ([self.vendorsIds containsObject:[NSNumber numberWithInteger:i]]) {
             [retString appendString: typeString];
         } else {
-            [retString appendString:restrictionUndefinedString];
+//            [retString appendString:restrictionUndefinedString];
+            [retString appendString:[NSString stringWithFormat:@"%d", 0]];
         }
     }
     return retString;

@@ -11,19 +11,19 @@
 @implementation SPTIabTCFModel
 
 - (BOOL)isVendorConsentGivenFor:(int)vendorId {
-    return [self booleanInBitString:self.parsedVendorsConsents forId:vendorId];
+    return [self booleanInBitString:self.parsedVendorConsents forId:vendorId];
 }
 
 - (BOOL)isVendorLegitInterestGivenFor:(int)vendorId {
-    return [self booleanInBitString:self.parsedVendorsLegitmateInterest forId:vendorId];
+    return [self booleanInBitString:self.parsedVendorLegitmateInterest forId:vendorId];
 }
 
 - (BOOL)isPurposeConsentGivenFor:(int)purposeId {
-    return [self booleanInBitString:self.parsedPurposesConsents forId:purposeId];
+    return [self booleanInBitString:self.parsedPurposeConsents forId:purposeId];
 }
 
 - (BOOL)isPurposeLegitInterestGivenFor:(int)purposeId {
-    return [self booleanInBitString:self.parsedPurposesLegitmateInterest forId:purposeId];
+    return [self booleanInBitString:self.parsedPurposeLegitmateInterest forId:purposeId];
 }
 
 - (BOOL)isSpecialFeatureOptedInFor:(int)specialFeatureId {
@@ -90,11 +90,11 @@
     [result setValue:@(self.consentScreen) forKey:@"consentScreen"];
     [result setValue:self.consentCountryCode forKey:@"consentCountryCode"];
     [result setValue:@(self.vendorListVersion) forKey:@"vendorListVersion"];
-    [result setValue:self.parsedPurposesConsents forKey:@"parsedPurposesConsents"];
-    [result setValue:self.parsedVendorsConsents forKey:@"parsedVendorsConsents"];
+    [result setValue:self.parsedPurposeConsents forKey:@"parsedPurposesConsents"];
+    [result setValue:self.parsedVendorConsents forKey:@"parsedVendorsConsents"];
     
-    [result setValue:self.parsedPurposesLegitmateInterest forKey:@"parsedPurposesLegitmateInterest"];
-    [result setValue:self.parsedVendorsLegitmateInterest forKey:@"parsedVendorsLegitmateInterest"];
+    [result setValue:self.parsedPurposeLegitmateInterest forKey:@"parsedPurposesLegitmateInterest"];
+    [result setValue:self.parsedVendorLegitmateInterest forKey:@"parsedVendorsLegitmateInterest"];
     [result setValue:@(self.policyVersion) forKey:@"policyVersion"];
     [result setValue:@(self.isServiceSpecific) forKey:@"isServiceSpecific"];
     [result setValue:@(self.useNonStandardStack) forKey:@"useNonStandardStack"];

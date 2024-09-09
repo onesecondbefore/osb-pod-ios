@@ -22,10 +22,10 @@
 
 @property (retain, nonatomic) NSString * tcString;
 
-@property (retain, nonatomic) NSString * parsedVendorsConsents;
-@property (retain, nonatomic) NSString * parsedVendorsLegitmateInterest;
-@property (retain, nonatomic) NSString * parsedPurposesConsents;
-@property (retain, nonatomic) NSString * parsedPurposesLegitmateInterest;
+@property (retain, nonatomic) NSString * parsedVendorConsents;
+@property (retain, nonatomic) NSString * parsedVendorLegitmateInterest;
+@property (retain, nonatomic) NSString * parsedPurposeConsents;
+@property (retain, nonatomic) NSString * parsedPurposeLegitmateInterest;
 
 @property (retain, nonatomic) NSString * specialFeatureOptIns;
 
