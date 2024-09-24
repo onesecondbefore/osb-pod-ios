@@ -71,6 +71,8 @@ public class OSB: NSObject {
     static let UDRemoteCMPVersionKey = "osb-defaults-remote-cmp-version"
     static let UDCmpCheckTimestampKey = "osb-defaults-cmp-check-timestamp"
     static let UDGoogleConsentModeKey = "osb-defaults-google-consent-mode"
+    static let UDIABTCFAdditionalConsents = "IABTCF_AddtlConsent"
+    
     
     private override init() {
         super.init()
@@ -187,6 +189,16 @@ public class OSB: NSObject {
     public func getConsent() -> [String]? {
         let defaults = UserDefaults.standard
         return defaults.object(forKey: OSB.UDConsentKey) as? [String]
+    }
+    
+    public func setAdditionalConsent(data: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(data, forKey: OSB.UDIABTCFAdditionalConsents)
+    }
+    
+    public func getAdditionalConsent() -> String? {
+        let defaults = UserDefaults.standard
+        return defaults.string(forKey: OSB.UDIABTCFAdditionalConsents)
     }
     
     public func sendEvent(category: String) throws {
