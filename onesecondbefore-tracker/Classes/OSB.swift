@@ -600,6 +600,10 @@ public class OSB: NSObject {
         if let json = convertConsentCallbackToJSON(consentCallbackString: consentCallbackString) {
             if let jsonConsent = json["consent"] as? Dictionary<String, Any>, let consentString = jsonConsent["tcString"] as? String, let expirationDate = json["expirationDate"] as? Int, let cduid = json["cduid"] as? String, let purposes = jsonConsent["purposes"] as? [Int], let specialFeatures = jsonConsent["specialFeatures"] as? [Int] {
                 
+                if let additionalConsent = jsonConsent["addtlConsent"] as? String {
+                    setAdditionalConsent(data: additionalConsent)
+                }
+                
                 let consentMode = mapConsentMode(purposes: purposes)
                 setGoogleConsentMode(consent: consentMode)
                 if let cc = self.consentCallback {
@@ -611,8 +615,13 @@ public class OSB: NSObject {
                 setConsentExpiration(timestamp: expirationDate)
                 setCDUID(cduid: cduid)
                 processSpecialFeatures(specialFeatures: specialFeatures)
+            } else {
+                print("OSB Error: missing data in consentCallbackString.")
             }
+        } else {
+            print("OSB Error: could not convert consentCallbackString to JSON.")
         }
+        
     }
     
     fileprivate func convertIABToPurposes(consentString: String) -> [Int] {
