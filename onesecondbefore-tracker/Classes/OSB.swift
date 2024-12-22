@@ -452,6 +452,40 @@ public class OSB: NSObject {
         }
     }
     
+    func getUserUID() -> String {
+        if let cduid = getCDUID() {
+            return cduid
+        }
+        
+        if let idfa = getIDFA(), idfa != "00000000-0000-0000-0000-000000000000" {
+            return idfa
+        }
+        
+        if let idfv = getIDFV() {
+            return idfv
+        }
+        
+        print("OSB Error: could not get userUID")
+        
+        return ""
+    }
+    
+    func getConsentWebviewURL() -> URL? {
+        var consent = "";
+        if let consentString = getConsent()?.first {
+            consent = consentString
+        }
+        
+        var siteIdURL = "";
+        if let siteId = info.siteId {
+            siteIdURL = "&sid=" + siteId
+        }
+        
+        let urlString = info.serverUrl + "/consent?aid=" + info.accountId + siteIdURL + "&type=app&show=true&version=" + getOSBSDKVersion() + "&consent=" + consent + "&cduid=" + getUserUID()
+        
+        return URL(string: urlString)
+    }
+    
     // MARK: - Deprecated functions
     
     @available(*, deprecated, renamed: "OSBHitType")
@@ -540,24 +574,6 @@ public class OSB: NSObject {
         return ""
     }
     
-    fileprivate func getUserUID() -> String {
-        if let cduid = getCDUID() {
-            return cduid
-        }
-        
-        if let idfa = getIDFA(), idfa != "00000000-0000-0000-0000-000000000000" {
-            return idfa
-        }
-        
-        if let idfv = getIDFV() {
-            return idfv
-        }
-        
-        print("OSB Error: could not get userUID")
-        
-        return ""
-    }
-    
     fileprivate func getIDFA() -> String? {
         // Check whether advertising tracking is enabled
         if #available(iOS 14, *) {
@@ -577,22 +593,6 @@ public class OSB: NSObject {
             return identifierForVendor.uuidString
         }
         return nil
-    }
-    
-    fileprivate func getConsentWebviewURL() -> URL? {
-        var consent = "";
-        if let consentString = getConsent()?.first {
-            consent = consentString
-        }
-        
-        var siteIdURL = "";
-        if let siteId = info.siteId {
-            siteIdURL = "&sid=" + siteId
-        }
-        
-        let urlString = info.serverUrl + "/consent?aid=" + info.accountId + siteIdURL + "&type=app&show=true&version=" + getOSBSDKVersion() + "&consent=" + consent + "&cduid=" + getUserUID()
-        
-        return URL(string: urlString)
     }
     
     fileprivate func processConsentCallback(consentCallbackString: String) {
