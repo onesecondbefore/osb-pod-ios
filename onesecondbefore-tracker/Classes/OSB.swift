@@ -452,7 +452,7 @@ public class OSB: NSObject {
         }
     }
     
-    func getUserUID() -> String {
+    public func getUserUID() -> String {
         if let cduid = getCDUID() {
             return cduid
         }
@@ -470,7 +470,7 @@ public class OSB: NSObject {
         return ""
     }
     
-    func getConsentWebviewURL() -> URL? {
+    public func getConsentWebviewURL() -> URL? {
         var consent = "";
         if let consentString = getConsent()?.first {
             consent = consentString
